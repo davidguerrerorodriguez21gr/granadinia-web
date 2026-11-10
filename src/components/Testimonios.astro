@@ -1,0 +1,55 @@
+---
+/**
+ * Prueba social. NO SE MUESTRA mientras sitio.TESTIMONIOS esté vacío.
+ * Añade solo testimonios reales y con permiso por escrito del cliente.
+ */
+import { sitio } from '../config/sitio';
+import { testimonios as t } from '../content/textos';
+const lista = sitio.TESTIMONIOS;
+---
+
+{
+  lista.length > 0 && (
+    <section id="testimonios" class="seccion" aria-labelledby="testimonios-titulo">
+      <div class="contenedor">
+        <header class="encabezado encabezado--centro">
+          <p class="antetitulo">{t.antetitulo}</p>
+          <h2 id="testimonios-titulo">{t.titulo}</h2>
+        </header>
+        <ul class="testimonios">
+          {lista.map((x) => (
+            <li class="tarjeta">
+              <figure>
+                <blockquote>
+                  <p>“{x.texto}”</p>
+                </blockquote>
+                <figcaption>
+                  <strong>{x.nombre}</strong>, {x.negocio} ({x.localidad})
+                </figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .testimonios {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    gap: var(--e-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    max-width: none;
+  }
+  figure,
+  blockquote {
+    margin: 0;
+  }
+  blockquote p {
+    font-size: 1.2rem;
+  }
+</style>

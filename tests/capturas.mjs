@@ -25,9 +25,36 @@ for (const tema of ['light', 'dark']) {
     });
     await pagina.goto(base + ruta, { waitUntil: 'networkidle' });
     await pagina.waitForTimeout(3200); // deja terminar la animación del hero
-    const archivo = `tests/capturas/${nombre}-${ancho}-${tema === 'light' ? 'claro' : 'oscuro'}.png`;
-    await pagina.screenshot({ path: archivo, fullPage: completa });
-    console.log('✔', archivo);
+    if (completa) {
+      // recorre la página para que se revelen las secciones animadas
+      const alto = await pagina.evaluate(() => document.body.scrollHeight);
+      for (let y = 0; y < alto; y += 400) {
+        await pagina.evaluate((y) => window.scrollTo(0, y), y);
+        await pagina.waitForTimeout(60);
+      }
+      await pagina.waitForTimeout(800);
+      await pagina.evaluate(() => window.scrollTo(0, 0));
+      await pagina.waitForTimeout(300);
+    }
+    const sufijo = `${ancho}-${tema === 'light' ? 'claro' : 'oscuro'}`;
+    if (completa) {
+      // Una captura por sección (Chrome no admite capturas de más de 16 384 px de alto)
+      // Oculta lo fijo (cabecera, barra inferior) para que no se repita en cada recorte
+      await pagina.addStyleTag({ content: '.cabecera,.barra-movil,.saltar{visibility:hidden!important}' });
+      const bloques = await pagina.$$('main > section, body > footer');
+      for (const [i, bloque] of bloques.entries()) {
+        const id = (await bloque.getAttribute('id')) ?? (i === 0 ? 'hero' : `bloque-${i}`);
+        const archivo = `tests/capturas/${nombre}-${String(i).padStart(2, '0')}-${id}-${sufijo}.png`;
+        await bloque.scrollIntoViewIfNeeded();
+        await pagina.waitForTimeout(250);
+        await bloque.screenshot({ path: archivo });
+      }
+      console.log('✔', nombre, sufijo, bloques.length, 'secciones');
+    } else {
+      const archivo = `tests/capturas/${nombre}-${sufijo}.png`;
+      await pagina.screenshot({ path: archivo });
+      console.log('✔', archivo);
+    }
     await pagina.close();
   }
 }

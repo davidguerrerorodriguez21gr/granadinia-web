@@ -1,0 +1,188 @@
+---
+import { comoFunciona } from '../content/textos';
+---
+
+<section id="como-funciona" class="seccion tema-noche" aria-labelledby="como-titulo">
+  <div class="estrellas" aria-hidden="true"></div>
+  <div class="contenedor rejilla">
+    <header class="encabezado aparece">
+      <p class="antetitulo">{comoFunciona.antetitulo}</p>
+      <h2 id="como-titulo">{comoFunciona.titulo}</h2>
+      <svg class="arco-dibujo" viewBox="0 0 200 220" aria-hidden="true" focusable="false">
+        <path d="M20 215V110a80 80 0 0 1 160 0v105" pathLength="1"></path>
+        <path d="M40 215V112a60 60 0 0 1 120 0v103" pathLength="1"></path>
+        <path d="M100 30v185" pathLength="1" class="arco-dibujo__eje"></path>
+      </svg>
+    </header>
+
+    <div class="linea-tiempo">
+    <span class="linea-tiempo__riel" aria-hidden="true"><span class="linea-tiempo__progreso"></span></span>
+    <ol class="linea-tiempo__pasos">
+      {
+        comoFunciona.pasos.map((p, i) => (
+          <li class="paso aparece" style={`--retraso:${i * 80}ms`} data-paso>
+            <span class="paso__punto" aria-hidden="true">
+              {i + 1}
+            </span>
+            <div class="paso__texto">
+              <h3>
+                <span class="sr-only">Paso {i + 1}: </span>
+                {p.titulo}
+              </h3>
+              <p>{p.texto}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .rejilla {
+    display: grid;
+    gap: var(--e-6);
+  }
+  @media (min-width: 60rem) {
+    .rejilla {
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: var(--e-8);
+    }
+    .encabezado {
+      position: sticky;
+      top: calc(var(--alto-cabecera) + var(--e-6));
+      align-self: start;
+    }
+  }
+  .estrellas {
+    position: absolute;
+    inset: 0;
+    opacity: 0.35;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cpath d='M32 4 40 24 60 32 40 40 32 60 24 40 4 32 24 24Z' fill='none' stroke='%23D9A273' stroke-opacity='.18' stroke-width='1.2'/%3E%3C/svg%3E");
+    -webkit-mask-image: linear-gradient(180deg, transparent, #000 30%, #000 70%, transparent);
+    mask-image: linear-gradient(180deg, transparent, #000 30%, #000 70%, transparent);
+    pointer-events: none;
+  }
+  .arco-dibujo {
+    display: none;
+    width: 11rem;
+    margin-top: var(--e-6);
+    fill: none;
+    stroke: var(--decoracion);
+    stroke-width: 2;
+  }
+  .arco-dibujo__eje {
+    stroke-dasharray: 0.02 0.02;
+    opacity: 0.5;
+  }
+  @media (min-width: 60rem) {
+    .arco-dibujo {
+      display: block;
+    }
+  }
+
+  .linea-tiempo {
+    position: relative;
+  }
+  .linea-tiempo__pasos {
+    display: grid;
+    gap: var(--e-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    max-width: none;
+  }
+  .linea-tiempo__riel {
+    position: absolute;
+    left: 1.6rem;
+    top: 1.6rem;
+    bottom: 1.6rem;
+    width: 4px;
+    translate: -50% 0;
+    border-radius: 4px;
+    background: var(--borde);
+    overflow: hidden;
+  }
+  .linea-tiempo__progreso {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, var(--cobre-sobre-oscuro), var(--cobre));
+    transform-origin: top;
+  }
+  .paso {
+    position: relative;
+    display: grid;
+    grid-template-columns: 3.2rem 1fr;
+    gap: var(--e-4);
+  }
+  .paso__punto {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 3.2rem;
+    height: 3.2rem;
+    border-radius: 999px 999px 12px 12px;
+    background: var(--boton-fondo);
+    color: var(--boton-texto);
+    font-size: 1.3rem;
+    font-weight: 900;
+    box-shadow: 0 0 0 6px var(--fondo);
+  }
+  .paso__texto {
+    padding: var(--e-4) var(--e-5);
+    border-radius: var(--radio-grande);
+    background: var(--superficie);
+    border: 1px solid var(--borde);
+  }
+  .paso h3 {
+    margin-bottom: var(--e-2);
+  }
+  .paso p {
+    margin: 0;
+    color: var(--texto-suave);
+  }
+  .paso:last-child .paso__texto {
+    border-color: var(--cobre-sobre-oscuro);
+    border-width: 2px;
+  }
+
+  /* Línea que se rellena con el scroll (CSS nativo; si no hay soporte, se ve llena) */
+  @supports (animation-timeline: view()) {
+    :global(.anima) .linea-tiempo__progreso {
+      animation: llenar linear both;
+      animation-timeline: --linea;
+      animation-range: entry 40% cover 75%;
+    }
+    :global(.anima) .linea-tiempo {
+      view-timeline-name: --linea;
+    }
+    :global(.anima) .arco-dibujo path {
+      stroke-dasharray: 1;
+      animation: trazar linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 50%;
+    }
+    :global(.anima) .arco-dibujo .arco-dibujo__eje {
+      stroke-dasharray: 0.02 0.02;
+      animation: none;
+    }
+  }
+  @keyframes llenar {
+    from {
+      transform: scaleY(0);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
+  @keyframes trazar {
+    from {
+      stroke-dashoffset: 1;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+</style>

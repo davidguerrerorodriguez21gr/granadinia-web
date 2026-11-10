@@ -1,0 +1,21 @@
+---
+/** Línea de colinas que separa secciones. `color` = fondo de la sección siguiente. */
+interface Props {
+  color?: string;
+  fondo?: string;
+  invertir?: boolean;
+}
+const { color = 'var(--fondo-alterno)', fondo = 'transparent', invertir = false } = Astro.props;
+---
+
+<svg
+  class="colinas"
+  viewBox="0 0 1440 80"
+  preserveAspectRatio="none"
+  aria-hidden="true"
+  focusable="false"
+  style={`color:${color};background:${fondo};${invertir ? 'transform:scaleX(-1)' : ''}`}
+>
+  <path d="M0 80V52c120-26 260-40 420-22s300 34 470 12 330-44 550-14v52z" fill="currentColor"></path>
+  <path d="M0 58c160-22 300-30 450-12s290 30 450 8 330-36 540-10" fill="none" stroke="var(--decoracion)" stroke-width="2" opacity="0.6" vector-effect="non-scaling-stroke"></path>
+</svg>

@@ -1,0 +1,96 @@
+---
+import Icono from './Icono.astro';
+import { paraQuien as t } from '../content/textos';
+import { whatsappConTexto } from '../config/sitio';
+import { comunes } from '../content/textos';
+---
+
+<section id="para-quien" class="seccion seccion--alterna" aria-labelledby="para-quien-titulo">
+  <div class="contenedor">
+    <header class="encabezado encabezado--centro aparece">
+      <p class="antetitulo">{t.antetitulo}</p>
+      <h2 id="para-quien-titulo">{t.titulo}</h2>
+    </header>
+
+    <ul class="oficios">
+      {
+        t.oficios.map((o, i) => (
+          <li class="oficio aparece" style={`--retraso:${i * 70}ms`}>
+            <span class="oficio__icono" aria-hidden="true">
+              <Icono nombre={o.icono} />
+            </span>
+            {o.nombre}
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="otros tarjeta aparece">
+      <div>
+        <h3>{t.otrosTitulo}</h3>
+        <p>{t.otrosTexto}</p>
+      </div>
+      <a class="boton boton--whatsapp" href={whatsappConTexto('Hola David, tengo un negocio de … en … y me gustaría saber si me puedes ayudar.')} rel="noopener">
+        <Icono nombre="whatsapp" />
+        {t.otrosBoton}
+        <span class="sr-only">{comunes.seAbreWhatsApp}</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .oficios {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 10.5rem), 1fr));
+    gap: var(--e-4);
+    margin: 0 0 var(--e-6);
+    padding: 0;
+    list-style: none;
+    max-width: none;
+  }
+  .oficio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--e-3);
+    padding: var(--e-5) var(--e-3);
+    border-radius: 999px 999px var(--radio-grande) var(--radio-grande);
+    background: var(--superficie);
+    border: 1px solid var(--borde);
+    text-align: center;
+    font-weight: var(--peso-fuerte);
+    line-height: 1.25;
+    transition: transform var(--medio) var(--curva);
+  }
+  .oficio:hover {
+    transform: translateY(-4px);
+  }
+  .oficio__icono {
+    display: grid;
+    place-items: center;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    background: var(--fondo-alterno);
+    color: var(--acento);
+  }
+  .oficio__icono :global(svg) {
+    width: 2rem;
+    height: 2rem;
+  }
+  .otros {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--e-4) var(--e-6);
+    border-left: 6px solid var(--decoracion);
+  }
+  .otros h3 {
+    margin-bottom: var(--e-2);
+  }
+  .otros p {
+    margin: 0;
+  }
+</style>

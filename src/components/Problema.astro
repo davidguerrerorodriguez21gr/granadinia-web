@@ -1,0 +1,196 @@
+---
+import Icono from './Icono.astro';
+import { problema } from '../content/textos';
+---
+
+<section id="problema" class="seccion" aria-labelledby="problema-titulo">
+  <div class="contenedor">
+    <header class="encabezado encabezado--centro aparece">
+      <p class="antetitulo">{problema.antetitulo}</p>
+      <h2 id="problema-titulo">{problema.titulo}</h2>
+      <p class="entradilla">{problema.entradilla}</p>
+    </header>
+
+    <ul class="problemas">
+      {
+        problema.tarjetas.map((t, i) => (
+          <li class="problema tarjeta tarjeta--interactiva aparece" style={`--retraso:${i * 90}ms`} data-problema>
+            <span class="problema__icono">
+              <Icono nombre={t.icono} />
+            </span>
+            <h3 class="problema__titulo">{t.problema}</h3>
+            <button
+              class="problema__boton"
+              type="button"
+              aria-expanded="true"
+              aria-controls={`solucion-${i}`}
+              data-problema-boton
+              data-ver={problema.verSolucion}
+              data-ocultar={problema.ocultarSolucion}
+              hidden
+            >
+              <span data-texto>{problema.verSolucion}</span>
+              <span class="problema__mas" aria-hidden="true">
+                <Icono nombre="mas" />
+              </span>
+            </button>
+            <div class="problema__solucion" id={`solucion-${i}`} data-problema-panel>
+              <p>
+                <span class="problema__check" aria-hidden="true">
+                  <Icono nombre="check" />
+                </span>
+                {t.solucion}
+              </p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .problemas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+    gap: var(--e-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    max-width: none;
+  }
+  .problema {
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-4);
+    overflow: hidden;
+  }
+  .problema::after {
+    /* arco decorativo en la esquina */
+    content: '';
+    position: absolute;
+    right: -2.5rem;
+    top: -2.5rem;
+    width: 6rem;
+    height: 6rem;
+    border: 2px solid var(--decoracion);
+    border-radius: 50%;
+    opacity: 0.35;
+    pointer-events: none;
+  }
+  .problema__icono {
+    display: inline-grid;
+    place-items: center;
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 999px 999px 12px 12px;
+    background: var(--fondo-alterno);
+    color: var(--acento);
+  }
+  .problema__icono :global(svg) {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+  .problema__titulo {
+    margin: 0;
+    font-size: 1.3rem;
+  }
+  .problema__boton {
+    display: none;
+  }
+  .problema__solucion p {
+    display: flex;
+    gap: var(--e-2);
+    margin: 0;
+    padding: var(--e-4);
+    border-radius: var(--radio);
+    background: var(--fondo-alterno);
+    border-left: 4px solid var(--oliva);
+    font-weight: var(--peso-medio);
+  }
+  .problema__check {
+    color: var(--oliva);
+    flex: none;
+  }
+  .problema__check :global(svg) {
+    width: 1.3rem;
+    height: 1.3rem;
+    margin-top: 0.15rem;
+    stroke-width: 3;
+  }
+
+  /* Con JS: la solución se despliega al pulsar */
+  :global(.js) .problema__boton {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--e-3);
+    width: 100%;
+    min-height: 3rem;
+    margin-top: auto;
+    padding: 0.6rem 0.6rem 0.6rem 1rem;
+    border: 2px solid var(--boton2-borde);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--acento);
+    font: inherit;
+    font-size: 1rem;
+    font-weight: var(--peso-fuerte);
+    cursor: pointer;
+    transition: background-color var(--rapido) ease;
+  }
+  :global(.js) .problema__boton:hover {
+    background: var(--fondo-alterno);
+  }
+  .problema__mas {
+    display: inline-grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--boton-fondo);
+    color: var(--boton-texto);
+    transition: transform var(--medio) var(--curva);
+  }
+  .problema__mas :global(svg) {
+    width: 1.1rem;
+    height: 1.1rem;
+    stroke-width: 3;
+  }
+  [aria-expanded='true'] .problema__mas {
+    transform: rotate(135deg);
+  }
+  .problema__solucion[hidden] {
+    display: none;
+  }
+  :global(.anima) .problema__solucion:not([hidden]) {
+    animation: desplegar 420ms var(--curva);
+  }
+  @keyframes desplegar {
+    from {
+      opacity: 0;
+      transform: translateY(-8px) rotateX(-12deg);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-problema]').forEach((tarjeta) => {
+    const boton = tarjeta.querySelector<HTMLButtonElement>('[data-problema-boton]');
+    const panel = tarjeta.querySelector<HTMLElement>('[data-problema-panel]');
+    const texto = boton?.querySelector<HTMLElement>('[data-texto]');
+    if (!boton || !panel) return;
+    const poner = (abierto: boolean) => {
+      boton.setAttribute('aria-expanded', String(abierto));
+      panel.hidden = !abierto;
+      if (texto) texto.textContent = (abierto ? boton.dataset.ocultar : boton.dataset.ver) ?? '';
+    };
+    boton.hidden = false;
+    poner(false);
+    boton.addEventListener('click', () => poner(boton.getAttribute('aria-expanded') !== 'true'));
+  });
+</script>

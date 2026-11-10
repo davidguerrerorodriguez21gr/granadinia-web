@@ -63,5 +63,8 @@ const ogImagen = new URL('/og-image.png', sitio.DOMINIO_PRINCIPAL).href;
   <body>
     <a class="saltar" href="#contenido">{comunes.saltar}</a>
     <slot />
+    <script>
+      import '../scripts/aparece';
+    </script>
   </body>
 </html>

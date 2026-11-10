@@ -1,0 +1,271 @@
+---
+import Ilustracion from './Ilustracion.astro';
+import Icono from './Icono.astro';
+import { solucion } from '../content/textos';
+---
+
+<section id="solucion" class="seccion seccion--alterna" aria-labelledby="solucion-titulo">
+  <div class="contenedor">
+    <header class="encabezado aparece">
+      <p class="antetitulo">{solucion.antetitulo}</p>
+      <h2 id="solucion-titulo">{solucion.titulo}</h2>
+      <p class="entradilla">{solucion.entradilla}</p>
+    </header>
+
+    <div class="piezas" data-pestanas>
+      <!-- Pestañas: solo se activan con JS y en pantallas anchas -->
+      <div class="piezas__lista" role="tablist" aria-label="Piezas del sistema" aria-orientation="vertical" hidden data-tablist>
+        {
+          solucion.piezas.map((p, i) => (
+            <button
+              class="piezas__pestana"
+              type="button"
+              role="tab"
+              id={`pestana-${p.id}`}
+              aria-controls={`pieza-${p.id}`}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              tabindex={i === 0 ? 0 : -1}
+            >
+              <span class="piezas__num" aria-hidden="true">{i + 1}</span>
+              {p.pestana}
+            </button>
+          ))
+        }
+      </div>
+
+      <div class="piezas__paneles">
+        {
+          solucion.piezas.map((p, i) => (
+            <article class="pieza aparece" id={`pieza-${p.id}`} data-panel style={`--retraso:${i * 60}ms`}>
+              <div class="pieza__texto">
+                <p class="pieza__num" aria-hidden="true">
+                  {String(i + 1).padStart(2, '0')}
+                </p>
+                <h3>{p.titulo}</h3>
+                <dl>
+                  <dt>{solucion.queEs}</dt>
+                  <dd>{p.que}</dd>
+                  <dt>
+                    <Icono nombre="check" /> {solucion.queGanas}
+                  </dt>
+                  <dd class="pieza__gana">{p.gana}</dd>
+                </dl>
+              </div>
+              <div class="pieza__dibujo">
+                <Ilustracion tipo={p.id} />
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .piezas__paneles {
+    display: grid;
+    gap: var(--e-5);
+  }
+  .pieza {
+    display: grid;
+    gap: var(--e-5);
+    align-items: center;
+    padding: clamp(1.25rem, 1rem + 2vw, 2.5rem);
+    background: var(--superficie);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio-grande);
+    box-shadow: var(--sombra);
+  }
+  @media (min-width: 48rem) {
+    .pieza {
+      grid-template-columns: 1.1fr 1fr;
+    }
+  }
+  .pieza__num {
+    margin: 0 0 var(--e-2);
+    color: var(--acento-grande);
+    font-size: 2.25rem;
+    font-weight: 900;
+    line-height: 1;
+  }
+  .pieza dl {
+    margin: 0;
+  }
+  .pieza dt {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: var(--e-4);
+    color: var(--acento);
+    font-size: var(--texto-pequeno);
+    font-weight: var(--peso-fuerte);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .pieza dt :global(svg) {
+    width: 1.1rem;
+    height: 1.1rem;
+    color: var(--oliva);
+    stroke-width: 3;
+  }
+  .pieza dd {
+    margin: var(--e-1) 0 0;
+    max-width: 40ch;
+  }
+  .pieza__gana {
+    font-weight: var(--peso-medio);
+  }
+  .pieza__dibujo {
+    display: grid;
+    place-items: center;
+  }
+
+  /* ---------- Modo pestañas (JS + pantalla ancha) ---------- */
+  .piezas.con-pestanas {
+    display: grid;
+    grid-template-columns: minmax(15rem, 0.42fr) 1fr;
+    gap: var(--e-6);
+    align-items: start;
+  }
+  .piezas__lista {
+    display: grid;
+    gap: var(--e-2);
+    position: sticky;
+    top: calc(var(--alto-cabecera) + var(--e-5));
+  }
+  .piezas__lista[hidden] {
+    display: none;
+  }
+  .piezas__pestana {
+    display: flex;
+    align-items: center;
+    gap: var(--e-3);
+    min-height: 3.5rem;
+    padding: var(--e-2) var(--e-4);
+    border: 2px solid transparent;
+    border-radius: var(--radio);
+    background: transparent;
+    color: var(--texto);
+    font: inherit;
+    font-weight: var(--peso-fuerte);
+    text-align: left;
+    cursor: pointer;
+    transition:
+      background-color var(--rapido) ease,
+      border-color var(--rapido) ease;
+  }
+  .piezas__pestana:hover {
+    background: var(--superficie);
+  }
+  .piezas__pestana[aria-selected='true'] {
+    background: var(--superficie);
+    border-color: var(--acento);
+    box-shadow: var(--sombra);
+  }
+  .piezas__num {
+    display: inline-grid;
+    place-items: center;
+    flex: none;
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 999px 999px 8px 8px;
+    border: 2px solid var(--decoracion);
+    color: var(--acento);
+    font-size: 0.95rem;
+  }
+  [aria-selected='true'] .piezas__num {
+    background: var(--boton-fondo);
+    border-color: var(--boton-fondo);
+    color: var(--boton-texto);
+  }
+  .con-pestanas .pieza[hidden] {
+    display: none;
+  }
+  .con-pestanas .pieza {
+    min-height: 26rem;
+  }
+  :global(.anima) .con-pestanas .pieza:not([hidden]) {
+    animation: cambiar 380ms var(--curva);
+  }
+  :global(.anima) .con-pestanas .pieza:not([hidden]) .pieza__dibujo {
+    animation: dibujo 520ms var(--curva);
+  }
+  @keyframes cambiar {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+  @keyframes dibujo {
+    from {
+      opacity: 0;
+      transform: scale(0.94) rotate(-2deg);
+    }
+  }
+</style>
+
+<script>
+  // Patrón ARIA de pestañas con activación automática (flechas, Inicio, Fin)
+  const raiz = document.querySelector<HTMLElement>('[data-pestanas]');
+  const lista = raiz?.querySelector<HTMLElement>('[data-tablist]');
+  const pestanas = [...(lista?.querySelectorAll<HTMLButtonElement>('[role="tab"]') ?? [])];
+  const paneles = [...(raiz?.querySelectorAll<HTMLElement>('[data-panel]') ?? [])];
+  const ancho = matchMedia('(min-width: 60rem)');
+  let actual = 0;
+
+  const seleccionar = (i: number, foco = false) => {
+    actual = (i + pestanas.length) % pestanas.length;
+    pestanas.forEach((p, j) => {
+      const sel = j === actual;
+      p.setAttribute('aria-selected', String(sel));
+      p.tabIndex = sel ? 0 : -1;
+      paneles[j].hidden = !sel;
+    });
+    if (foco) pestanas[actual].focus();
+  };
+
+  const modo = () => {
+    if (!raiz || !lista) return;
+    if (ancho.matches) {
+      raiz.classList.add('con-pestanas');
+      lista.hidden = false;
+      paneles.forEach((p, j) => {
+        p.setAttribute('role', 'tabpanel');
+        p.setAttribute('aria-labelledby', pestanas[j].id);
+        p.tabIndex = 0;
+        p.classList.add('visible');
+      });
+      seleccionar(actual);
+    } else {
+      raiz.classList.remove('con-pestanas');
+      lista.hidden = true;
+      paneles.forEach((p) => {
+        p.hidden = false;
+        p.removeAttribute('role');
+        p.removeAttribute('aria-labelledby');
+        p.removeAttribute('tabindex');
+      });
+    }
+  };
+
+  pestanas.forEach((p, i) => {
+    p.addEventListener('click', () => seleccionar(i));
+    p.addEventListener('keydown', (e) => {
+      const teclas: Record<string, number> = {
+        ArrowDown: i + 1,
+        ArrowRight: i + 1,
+        ArrowUp: i - 1,
+        ArrowLeft: i - 1,
+        Home: 0,
+        End: pestanas.length - 1,
+      };
+      if (e.key in teclas) {
+        e.preventDefault();
+        seleccionar(teclas[e.key], true);
+      }
+    });
+  });
+  ancho.addEventListener('change', modo);
+  modo();
+</script>

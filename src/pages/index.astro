@@ -2,14 +2,52 @@
 import Base from '../layouts/Base.astro';
 import Cabecera from '../components/Cabecera.astro';
 import Hero from '../components/Hero.astro';
+import Problema from '../components/Problema.astro';
+import Solucion from '../components/Solucion.astro';
+import ComoFunciona from '../components/ComoFunciona.astro';
+import Calculadora from '../components/Calculadora.astro';
+import ParaQuien from '../components/ParaQuien.astro';
+import Precios from '../components/Precios.astro';
+import SobreMi from '../components/SobreMi.astro';
+import Testimonios from '../components/Testimonios.astro';
+import Preguntas from '../components/Preguntas.astro';
+import Contacto from '../components/Contacto.astro';
+import Pie from '../components/Pie.astro';
+import Colinas from '../components/Colinas.astro';
+import { sitio } from '../config/sitio';
 ---
 
 <Base
   titulo="GranadinIA | Marketing e IA para negocios de Granada y Maracena"
-  descripcion="Ficha de Google, WhatsApp Business y reseñas para electricistas, fontaneros y negocios de Granada. Lo dejo funcionando en 14 días. Hecho en Maracena."
+  descripcion="Ficha de Google, WhatsApp Business y reseñas en Google para electricistas, fontaneros y negocios de Granada. Lo dejo funcionando en 14 días. Hecho en Maracena."
 >
   <Cabecera />
   <main id="contenido" tabindex="-1">
     <Hero />
+    <Problema />
+    <Colinas />
+    <Solucion />
+    <Colinas color="#2e1a10" fondo="var(--fondo-alterno)" invertir />
+    <ComoFunciona />
+    <Colinas color="var(--fondo)" fondo="#2e1a10" />
+    <Calculadora />
+    <Colinas />
+    <ParaQuien />
+    {
+      sitio.MOSTRAR_PRECIOS && (
+        <>
+          <Colinas color="var(--fondo)" fondo="var(--fondo-alterno)" invertir />
+          <Precios />
+          <Colinas />
+        </>
+      )
+    }
+    <SobreMi />
+    <Colinas color="var(--fondo)" fondo="var(--fondo-alterno)" />
+    <Testimonios />
+    <Preguntas />
+    <Colinas color="#2e1a10" invertir />
+    <Contacto />
   </main>
+  <Pie />
 </Base>

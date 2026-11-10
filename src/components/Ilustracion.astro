@@ -1,0 +1,190 @@
+---
+/** Ilustraciones SVG propias y decorativas para cada pieza de la solución. */
+interface Props {
+  tipo: string;
+}
+const { tipo } = Astro.props;
+// Patrón de QR inventado (decorativo, no lleva a ningún sitio)
+const qr = [
+  '1110101', '1010010', '1110111', '0001010', '1101101', '0110010', '1011011',
+];
+---
+
+<svg class="ilustracion" viewBox="0 0 320 260" aria-hidden="true" focusable="false">
+  <rect x="10" y="14" width="300" height="236" rx="28" class="il-fondo"></rect>
+  {
+    tipo === 'google' && (
+      <g>
+        <rect x="46" y="40" width="228" height="190" rx="18" class="il-tarjeta" />
+        <rect x="46" y="40" width="228" height="62" rx="18" class="il-cobre-claro" />
+        <path d="M60 102 v-30 l18-14 18 14 v30z" class="il-oscuro" opacity=".85" />
+        <circle cx="236" cy="70" r="16" class="il-tarjeta" />
+        <path d="M236 60a8 8 0 0 1 8 8c0 6-8 14-8 14s-8-8-8-14a8 8 0 0 1 8-8z" class="il-cobre" />
+        <rect x="64" y="118" width="120" height="12" rx="6" class="il-oscuro" />
+        <g class="il-estrellas">
+          {[0, 1, 2, 3, 4].map((i) => (
+            <path transform={`translate(${64 + i * 22} 140)`} d="M9 0l2.6 5.6 6 .7-4.5 4.1 1.2 6L9 13.4 3.7 16.4l1.2-6L.4 6.3l6-.7z" class="il-estrella" />
+          ))}
+        </g>
+        <rect x="64" y="168" width="84" height="12" rx="6" class="il-linea" />
+        <rect x="64" y="186" width="140" height="10" rx="5" class="il-linea" />
+        <rect x="64" y="204" width="56" height="16" rx="8" class="il-verde" />
+        <rect x="128" y="204" width="56" height="16" rx="8" class="il-borde" />
+      </g>
+    )
+  }
+  {
+    tipo === 'whatsapp' && (
+      <g>
+        <rect x="92" y="28" width="136" height="214" rx="22" class="il-movil" />
+        <rect x="100" y="38" width="120" height="194" rx="15" class="il-pantalla" />
+        <rect x="100" y="38" width="120" height="30" rx="15" class="il-verde" />
+        <rect x="100" y="54" width="120" height="14" class="il-verde" />
+        <circle cx="116" cy="53" r="8" class="il-cobre-claro" />
+        <rect x="130" y="49" width="44" height="8" rx="4" fill="#fff" opacity=".85" />
+        <rect x="108" y="80" width="78" height="26" rx="8" fill="#fff" />
+        <rect x="130" y="114" width="82" height="34" rx="8" class="il-burbuja" />
+        <rect x="138" y="122" width="62" height="6" rx="3" class="il-verde-osc" opacity=".7" />
+        <rect x="138" y="134" width="44" height="6" rx="3" class="il-verde-osc" opacity=".7" />
+        <g>
+          <rect x="106" y="164" width="52" height="18" rx="9" class="il-chip" />
+          <rect x="162" y="164" width="52" height="18" rx="9" class="il-chip" />
+          <rect x="106" y="188" width="70" height="18" rx="9" class="il-chip" />
+        </g>
+        <path d="M232 70l6-14 6 14 14 6-14 6-6 14-6-14-14-6z" class="il-cobre" />
+      </g>
+    )
+  }
+  {
+    tipo === 'resenas' && (
+      <g>
+        <rect x="44" y="44" width="132" height="172" rx="16" class="il-tarjeta" />
+        <g transform="translate(64 64)">
+          {qr.map((fila, y) =>
+            [...fila].map((c, x) => (c === '1' ? <rect x={x * 13} y={y * 13} width="12" height="12" rx="2" class="il-oscuro" /> : null)),
+          )}
+        </g>
+        <rect x="64" y="172" width="92" height="10" rx="5" class="il-linea" />
+        <rect x="74" y="190" width="72" height="10" rx="5" class="il-linea" />
+        <g transform="translate(190 70)">
+          <rect width="96" height="120" rx="14" class="il-tarjeta" />
+          {[0, 1, 2, 3, 4].map((i) => (
+            <path transform={`translate(${10 + (i % 3) * 26} ${16 + Math.floor(i / 3) * 26}) scale(1.15)`} d="M9 0l2.6 5.6 6 .7-4.5 4.1 1.2 6L9 13.4 3.7 16.4l1.2-6L.4 6.3l6-.7z" class="il-estrella" />
+          ))}
+          <rect x="12" y="78" width="72" height="8" rx="4" class="il-linea" />
+          <rect x="12" y="94" width="50" height="8" rx="4" class="il-linea" />
+        </g>
+      </g>
+    )
+  }
+  {
+    tipo === 'hoja' && (
+      <g>
+        <rect x="34" y="38" width="252" height="190" rx="16" class="il-tarjeta" />
+        <rect x="34" y="38" width="252" height="34" rx="16" class="il-cobre-claro" />
+        <rect x="34" y="56" width="252" height="16" class="il-cobre-claro" />
+        {[0, 1, 2, 3].map((i) => (
+          <g transform={`translate(0 ${86 + i * 34})`}>
+            <rect x="52" y="6" width="16" height="16" rx="4" class={i === 0 ? 'il-verde' : 'il-borde'} />
+            {i === 0 && <path d="M55 14l3.5 3.5L65 10" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />}
+            <rect x="80" y="8" width={[86, 70, 96, 60][i]} height="10" rx="5" class="il-oscuro" opacity=".75" />
+            <rect x="198" y="4" width="70" height="20" rx="10" class={['il-verde-claro', 'il-cobre-pastilla', 'il-cobre-pastilla', 'il-gris'][i]} />
+            <line x1="52" x2="268" y1="31" y2="31" class="il-separador" />
+          </g>
+        ))}
+      </g>
+    )
+  }
+  {
+    tipo === 'formacion' && (
+      <g>
+        <circle cx="160" cy="132" r="84" class="il-tarjeta" />
+        <circle cx="160" cy="132" r="84" fill="none" class="il-arco-reloj" stroke-width="10" pathLength="60" stroke-dasharray="30 60" transform="rotate(-90 160 132)" />
+        <rect x="132" y="88" width="56" height="92" rx="10" class="il-movil" />
+        <rect x="137" y="96" width="46" height="74" rx="6" class="il-pantalla" />
+        <path d="M152 124l18 10-18 10z" class="il-cobre" />
+        <path d="M232 64l5-12 5 12 12 5-12 5-5 12-5-12-12-5z" class="il-cobre" />
+        <path d="M74 190l4-9 4 9 9 4-9 4-4 9-4-9-9-4z" class="il-cobre" opacity=".7" />
+      </g>
+    )
+  }
+</svg>
+
+<style>
+  .ilustracion {
+    width: 100%;
+    max-width: 26rem;
+    height: auto;
+  }
+  .il-fondo {
+    fill: var(--fondo-alterno);
+    stroke: var(--decoracion);
+    stroke-opacity: 0.35;
+  }
+  .il-tarjeta {
+    fill: var(--superficie);
+    stroke: var(--borde);
+    stroke-width: 2;
+  }
+  .il-oscuro {
+    fill: var(--titulo);
+  }
+  .il-cobre {
+    fill: var(--decoracion);
+  }
+  .il-cobre-claro {
+    fill: var(--decoracion);
+    opacity: 0.35;
+  }
+  .il-cobre-pastilla {
+    fill: var(--decoracion);
+    opacity: 0.4;
+  }
+  .il-estrella {
+    fill: #e0a43c;
+  }
+  .il-linea {
+    fill: var(--texto-suave);
+    opacity: 0.35;
+  }
+  .il-verde {
+    fill: #1f7a45;
+  }
+  .il-verde-claro {
+    fill: #9fd3b0;
+  }
+  .il-verde-osc {
+    fill: #1f5c3a;
+  }
+  .il-gris {
+    fill: var(--texto-suave);
+    opacity: 0.25;
+  }
+  .il-borde {
+    fill: none;
+    stroke: var(--decoracion);
+    stroke-width: 2;
+  }
+  .il-movil {
+    fill: #20140d;
+  }
+  .il-pantalla {
+    fill: #efe6d8;
+  }
+  .il-burbuja {
+    fill: #d6f0cf;
+  }
+  .il-chip {
+    fill: #fff;
+    stroke: #1f7a45;
+    stroke-width: 1.5;
+  }
+  .il-separador {
+    stroke: var(--borde);
+    stroke-width: 1.5;
+  }
+  .il-arco-reloj {
+    stroke: var(--decoracion);
+    stroke-linecap: round;
+  }
+</style>

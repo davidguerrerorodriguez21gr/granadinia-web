@@ -1,7 +1,7 @@
 ---
 /** Iconos SVG propios, en línea y decorativos (aria-hidden). */
 interface Props {
-  nombre: 'whatsapp' | 'telefono' | 'correo' | 'menu' | 'cerrar' | 'luna' | 'sol' | 'flecha' | 'instagram' | 'check';
+  nombre: string;
   clase?: string;
 }
 const { nombre, clase } = Astro.props;
@@ -39,4 +39,52 @@ const { nombre, clase } = Astro.props;
     </>
   )}
   {nombre === 'check' && <path d="M5 12.5 10 17 19 7" />}
+  {nombre === 'mas' && <path d="M12 5v14M5 12h14" />}
+  {nombre === 'llamada' && (
+    <>
+      <path d="M5 3.5h3.2l1.6 4.2-2.1 1.4a11 11 0 0 0 5.2 5.2l1.4-2.1 4.2 1.6V17a2.5 2.5 0 0 1-2.7 2.5A15.5 15.5 0 0 1 2.5 6.2 2.5 2.5 0 0 1 5 3.5z" />
+      <path d="M15 3l6 6M21 3l-6 6" />
+    </>
+  )}
+  {nombre === 'presupuesto' && (
+    <>
+      <path d="M6 2.5h9l4 4v15H6z" />
+      <path d="M14.5 2.5v4.5H19M9 12h7M9 15.5h7M9 19h4" />
+    </>
+  )}
+  {nombre === 'estrella' && <path d="M12 3.2l2.6 5.5 6 .7-4.5 4.1 1.2 5.9L12 16.5l-5.3 2.9 1.2-5.9-4.5-4.1 6-.7z" />}
+  {nombre === 'electricista' && <path d="M13 2.5 5 13.5h6l-1 8 8-11h-6z" />}
+  {nombre === 'fontanero' && (
+    <>
+      <path d="M4 9.5h9a3 3 0 0 1 3 3V14" />
+      <path d="M4 6.5v6M8.5 6.5v3M7 6.5h3" />
+      <path d="M16 17.5c0 1.4-1 2.5-2 2.5s-2-1.1-2-2.5S14 14.5 14 14.5s2 1.6 2 3z" />
+      <path d="M13 9.5V8h5.5a1.5 1.5 0 0 1 1.5 1.5v3" />
+    </>
+  )}
+  {nombre === 'climatizacion' && (
+    <>
+      <path d="M12 2.5v19M3.8 7.2l16.4 9.6M3.8 16.8l16.4-9.6" />
+      <path d="M9.5 4 12 6.5 14.5 4M9.5 20l2.5-2.5 2.5 2.5" />
+    </>
+  )}
+  {nombre === 'reformas' && (
+    <>
+      <path d="M3 21h18M5 21v-7h6v7M13 21V10h6v11" />
+      <path d="M3 10.5 12 3l9 7.5" />
+    </>
+  )}
+  {nombre === 'electronica' && (
+    <>
+      <rect x="7" y="7" width="10" height="10" rx="1.5" />
+      <path d="M10 2.5V7M14 2.5V7M10 17v4.5M14 17v4.5M2.5 10H7M2.5 14H7M17 10h4.5M17 14h4.5" />
+    </>
+  )}
+  {nombre === 'escudo' && (
+    <>
+      <path d="M12 2.8 4.5 5.5v6c0 4.6 3.1 8.2 7.5 9.7 4.4-1.5 7.5-5.1 7.5-9.7v-6z" />
+      <path d="m8.5 12 2.5 2.5 4.5-5" />
+    </>
+  )}
+  {nombre === 'externo' && <path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" />}
 </svg>

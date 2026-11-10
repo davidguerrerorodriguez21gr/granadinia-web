@@ -1,0 +1,384 @@
+---
+import Icono from './Icono.astro';
+import { sitio, whatsappConTexto, telefonoHref, correoHref } from '../config/sitio';
+import { contacto as t, comunes } from '../content/textos';
+
+const f = t.formulario;
+const campos = [
+  { id: 'nombre', tipo: 'input', autocompletar: 'name', ...f.campos.nombre, ejemplo: '' },
+  { id: 'negocio', tipo: 'input', autocompletar: 'organization-title', ...f.campos.negocio },
+  { id: 'localidad', tipo: 'input', autocompletar: 'address-level2', ...f.campos.localidad },
+  { id: 'mejora', tipo: 'textarea', autocompletar: 'off', ...f.campos.mejora },
+];
+const filasRgpd = t.rgpd.filas.map(([k, v]) => [
+  k,
+  v.replace('RESPONSABLE', sitio.RESPONSABLE).replace('CORREO', sitio.CORREO_CONTACTO),
+]);
+---
+
+<section id="contacto" class="seccion tema-noche contacto" aria-labelledby="contacto-titulo">
+  <div class="contenedor">
+    <header class="encabezado encabezado--centro aparece">
+      <p class="antetitulo">{t.antetitulo}</p>
+      <h2 id="contacto-titulo">{t.titulo}</h2>
+      <p class="entradilla">{t.entradilla} {sitio.TIEMPO_RESPUESTA}.</p>
+    </header>
+
+    <ul class="canales">
+      <li class="aparece">
+        <a class="canal canal--wa" href={whatsappConTexto()} rel="noopener">
+          <Icono nombre="whatsapp" />
+          <span class="canal__titulo">{t.canales.whatsapp.titulo}</span>
+          <span class="canal__dato">{t.canales.whatsapp.texto}</span>
+          <span class="sr-only">{comunes.seAbreWhatsApp}</span>
+        </a>
+      </li>
+      <li class="aparece" style="--retraso:80ms">
+        <a class="canal" href={telefonoHref}>
+          <Icono nombre="telefono" />
+          <span class="canal__titulo">{t.canales.llamar.titulo}</span>
+          <span class="canal__dato">{sitio.TELEFONO_VISIBLE}</span>
+          <span class="sr-only">{comunes.seAbreTelefono}</span>
+        </a>
+      </li>
+      <li class="aparece" style="--retraso:160ms">
+        <a class="canal" href={correoHref()}>
+          <Icono nombre="correo" />
+          <span class="canal__titulo">{t.canales.correo.titulo}</span>
+          <span class="canal__dato">{sitio.CORREO_CONTACTO}</span>
+          <span class="sr-only">{comunes.seAbreCorreo}</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="formulario aparece">
+      <h3 id="form-titulo">{f.titulo}</h3>
+      <p class="formulario__explica" id="form-explica">{f.explicacion}</p>
+      <noscript><p class="formulario__nojs">{f.sinJs}</p></noscript>
+
+      <form
+        class="formulario__form"
+        novalidate
+        aria-labelledby="form-titulo"
+        aria-describedby="form-explica"
+        data-formulario
+        data-wa={sitio.WHATSAPP_URL}
+        data-correo={sitio.CORREO_CONTACTO}
+        data-asunto={sitio.CORREO_ASUNTO}
+      >
+        <p class="formulario__oblig">{f.todosObligatorios}</p>
+        <div class="formulario__rejilla">
+          {
+            campos.map((c) => (
+              <div class:list={['campo', { 'campo--ancho': c.tipo === 'textarea' }]}>
+                <label for={`f-${c.id}`}>{c.etiqueta}</label>
+                {c.tipo === 'textarea' ? (
+                  <textarea
+                    class="control"
+                    id={`f-${c.id}`}
+                    name={c.id}
+                    required
+                    rows="4"
+                    maxlength="600"
+                    placeholder={c.ejemplo}
+                    aria-describedby={`f-${c.id}-error`}
+                  />
+                ) : (
+                  <input
+                    class="control"
+                    id={`f-${c.id}`}
+                    name={c.id}
+                    type="text"
+                    required
+                    maxlength="120"
+                    autocomplete={c.autocompletar}
+                    placeholder={c.ejemplo || undefined}
+                    aria-describedby={`f-${c.id}-error`}
+                  />
+                )}
+                <p class="error" id={`f-${c.id}-error`} data-error={c.error} hidden />
+              </div>
+            ))
+          }
+        </div>
+
+        <div class="campo casilla">
+          <input type="checkbox" id="f-privacidad" name="privacidad" required aria-describedby="f-privacidad-error" />
+          <label for="f-privacidad">
+            {f.privacidadAntes} <a href="/privacidad">{f.privacidadEnlace}</a> {f.privacidadDespues}
+          </label>
+          <p class="error" id="f-privacidad-error" data-error={f.privacidadError} hidden />
+        </div>
+
+        <div class="formulario__acciones">
+          <button class="boton boton--whatsapp boton--grande" type="submit" value="whatsapp">
+            <Icono nombre="whatsapp" />
+            {f.enviar}
+            <span class="sr-only">{comunes.seAbreWhatsApp}</span>
+          </button>
+          <button class="enlace-boton" type="submit" value="correo" data-via-correo>
+            {f.correo}
+            <span class="sr-only">{comunes.seAbreCorreo}</span>
+          </button>
+        </div>
+        <p class="sr-only" role="status" data-estado></p>
+      </form>
+
+      <section class="rgpd" aria-labelledby="rgpd-titulo">
+        <h4 id="rgpd-titulo">{t.rgpd.titulo}</h4>
+        <dl>
+          {
+            filasRgpd.map(([k, v]) => (
+              <div>
+                <dt>{k}</dt>
+                <dd>{v}</dd>
+              </div>
+            ))
+          }
+        </dl>
+        <p>
+          {t.rgpd.masInfo} <a href="/privacidad">política de privacidad</a>.
+        </p>
+      </section>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contacto {
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 0%, rgb(217 162 115 / 0.18), transparent 70%),
+      var(--fondo);
+  }
+  .canales {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+    gap: var(--e-4);
+    margin: 0 0 var(--e-7);
+    padding: 0;
+    list-style: none;
+    max-width: none;
+  }
+  .canal {
+    display: grid;
+    justify-items: center;
+    gap: var(--e-1);
+    height: 100%;
+    padding: var(--e-5) var(--e-4);
+    border: 2px solid var(--borde-control);
+    border-radius: 7rem 7rem var(--radio-grande) var(--radio-grande);
+    background: var(--superficie);
+    color: var(--texto);
+    text-align: center;
+    text-decoration: none;
+    transition:
+      transform var(--medio) var(--curva),
+      border-color var(--rapido) ease;
+  }
+  .canal:hover {
+    transform: translateY(-4px);
+    border-color: var(--acento);
+  }
+  .canal :global(svg) {
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-bottom: var(--e-2);
+    color: var(--acento);
+  }
+  .canal--wa {
+    background: var(--whatsapp);
+    border-color: var(--whatsapp);
+    color: #fff;
+  }
+  .canal--wa :global(svg) {
+    color: #fff;
+  }
+  .canal--wa:hover {
+    border-color: #fff;
+  }
+  .canal__titulo {
+    font-size: 1.4rem;
+    font-weight: 900;
+  }
+  .canal__dato {
+    font-weight: var(--peso-medio);
+    overflow-wrap: anywhere;
+  }
+
+  .formulario {
+    max-width: 52rem;
+    margin-inline: auto;
+    padding: clamp(1.25rem, 1rem + 2vw, 2.5rem);
+    border-radius: var(--radio-grande);
+    background: var(--superficie);
+    border: 1px solid var(--borde);
+  }
+  .formulario__explica {
+    color: var(--texto-suave);
+  }
+  .formulario__oblig {
+    font-size: var(--texto-pequeno);
+    color: var(--texto-suave);
+  }
+  .formulario__nojs {
+    padding: var(--e-4);
+    border-radius: var(--radio);
+    background: var(--fondo);
+  }
+  .formulario__rejilla {
+    display: grid;
+    gap: var(--e-5);
+    margin-bottom: var(--e-5);
+  }
+  @media (min-width: 44rem) {
+    .formulario__rejilla {
+      grid-template-columns: 1fr 1fr;
+    }
+    .campo--ancho {
+      grid-column: 1 / -1;
+    }
+  }
+  .formulario :global(.control) {
+    background: var(--fondo);
+  }
+  .casilla {
+    grid-template-columns: auto 1fr;
+    align-items: start;
+    column-gap: var(--e-3);
+  }
+  .casilla input {
+    width: 1.6rem;
+    height: 1.6rem;
+    margin: 0.15rem 0 0;
+    accent-color: var(--cobre-sobre-oscuro);
+    cursor: pointer;
+  }
+  .casilla label {
+    font-weight: var(--peso-normal);
+    line-height: 1.5;
+    cursor: pointer;
+  }
+  .casilla .error {
+    grid-column: 1 / -1;
+  }
+  .formulario__acciones {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--e-3) var(--e-5);
+    margin-top: var(--e-5);
+  }
+  @media (max-width: 30rem) {
+    .formulario__acciones .boton {
+      width: 100%;
+    }
+  }
+  .enlace-boton {
+    min-height: 44px;
+    padding: 0 var(--e-2);
+    border: 0;
+    background: none;
+    color: var(--enlace);
+    font: inherit;
+    font-weight: var(--peso-fuerte);
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+    cursor: pointer;
+  }
+  .rgpd {
+    margin-top: var(--e-6);
+    padding-top: var(--e-5);
+    border-top: 1px solid var(--borde);
+    font-size: var(--texto-pequeno);
+    color: var(--texto-suave);
+  }
+  .rgpd h4 {
+    font-size: 1.05rem;
+    margin-bottom: var(--e-3);
+  }
+  .rgpd dl {
+    display: grid;
+    gap: var(--e-2);
+    margin: 0 0 var(--e-3);
+  }
+  .rgpd dl > div {
+    display: grid;
+    gap: 0 var(--e-4);
+  }
+  @media (min-width: 40rem) {
+    .rgpd dl > div {
+      grid-template-columns: 9rem 1fr;
+    }
+  }
+  .rgpd dt {
+    font-weight: var(--peso-fuerte);
+    color: var(--texto);
+  }
+  .rgpd dd {
+    margin: 0;
+  }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-formulario]');
+  const estado = form?.querySelector<HTMLElement>('[data-estado]');
+
+  type Datos = { nombre: string; negocio: string; localidad: string; mejora: string };
+  const mensaje = (d: Datos) =>
+    `Hola David, vengo de la web de GranadinIA.\n\nNombre: ${d.nombre}\nNegocio: ${d.negocio}\nLocalidad: ${d.localidad}\n\nMe gustaría mejorar: ${d.mejora}`;
+
+  const marcar = (campo: HTMLInputElement | HTMLTextAreaElement, valido: boolean) => {
+    const error = form?.querySelector<HTMLElement>(`#${campo.id}-error`);
+    campo.setAttribute('aria-invalid', String(!valido));
+    if (error) {
+      error.hidden = valido;
+      error.textContent = valido ? '' : (error.dataset.error ?? '');
+    }
+    return valido;
+  };
+
+  const validar = () => {
+    if (!form) return false;
+    const campos = [...form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('[required]')];
+    const malos = campos.filter((c) => {
+      const ok = c.type === 'checkbox' ? (c as HTMLInputElement).checked : c.value.trim().length > 1;
+      return !marcar(c, ok);
+    });
+    if (malos.length) {
+      malos[0].focus();
+      if (estado) estado.textContent = '';
+      return false;
+    }
+    return true;
+  };
+
+  // Revalida un campo en cuanto se corrige
+  form?.addEventListener('input', (e) => {
+    const c = e.target as HTMLInputElement;
+    if (c.getAttribute('aria-invalid') === 'true') {
+      marcar(c, c.type === 'checkbox' ? c.checked : c.value.trim().length > 1);
+    }
+  });
+  form?.addEventListener('change', (e) => {
+    const c = e.target as HTMLInputElement;
+    if (c.type === 'checkbox' && c.getAttribute('aria-invalid') === 'true') marcar(c, c.checked);
+  });
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!validar()) return;
+    const datos = Object.fromEntries(
+      ['nombre', 'negocio', 'localidad', 'mejora'].map((n) => [
+        n,
+        ((form.elements.namedItem(n) as HTMLInputElement).value ?? '').trim(),
+      ]),
+    ) as Datos;
+    const texto = mensaje(datos);
+    const porCorreo = (e.submitter as HTMLButtonElement | null)?.value === 'correo';
+    const url = porCorreo
+      ? `mailto:${form.dataset.correo}?subject=${encodeURIComponent(form.dataset.asunto ?? '')}&body=${encodeURIComponent(texto)}`
+      : `${form.dataset.wa}?text=${encodeURIComponent(texto)}`;
+    if (estado) estado.textContent = porCorreo ? 'Abriendo tu correo con el mensaje escrito.' : 'Abriendo WhatsApp con el mensaje escrito.';
+    window.location.href = url;
+  });
+</script>

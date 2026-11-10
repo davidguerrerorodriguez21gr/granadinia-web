@@ -1,0 +1,171 @@
+---
+import Icono from './Icono.astro';
+import { calculadora as c } from '../content/textos';
+const campos = [
+  { id: 'perdidas', ...c.campos.perdidas, min: 0, max: 500, paso: 1 },
+  { id: 'decada10', ...c.campos.deCada10, min: 0, max: 10, paso: 1 },
+  { id: 'valor', ...c.campos.valor, min: 0, max: 100000, paso: 1 },
+];
+---
+
+<section id="calculadora" class="seccion" aria-labelledby="calc-titulo">
+  <div class="contenedor calc">
+    <header class="encabezado aparece">
+      <p class="antetitulo">{c.antetitulo}</p>
+      <h2 id="calc-titulo">{c.titulo}</h2>
+      <p class="entradilla">{c.entradilla}</p>
+    </header>
+
+    <div class="calc__caja tarjeta aparece">
+      <form class="calc__form" data-calc novalidate aria-describedby="calc-aviso">
+        {
+          campos.map((f) => (
+            <div class="campo">
+              <label for={`calc-${f.id}`}>{f.etiqueta}</label>
+              <p class="ayuda" id={`calc-${f.id}-ayuda`}>
+                {f.ayuda}
+              </p>
+              <input
+                class="control"
+                id={`calc-${f.id}`}
+                name={f.id}
+                type="number"
+                inputmode="numeric"
+                min={f.min}
+                max={f.max}
+                step={f.paso}
+                placeholder={f.ejemplo}
+                aria-describedby={`calc-${f.id}-ayuda`}
+              />
+            </div>
+          ))
+        }
+        <noscript><p class="calc__nojs">{c.sinJs}</p></noscript>
+      </form>
+
+      <div class="calc__resultado tema-noche">
+        <div aria-live="polite" aria-atomic="true" data-calc-resultado>
+          <p class="calc__vacio">{c.vacio}</p>
+        </div>
+        <p class="calc__aviso" id="calc-aviso">{c.aviso}</p>
+        <a class="boton boton--grande" href="#contacto">
+          {c.boton}
+          <Icono nombre="flecha" />
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<template id="calc-plantilla">
+  <p class="calc__linea">{c.resultadoMes}</p>
+  <p class="calc__cifra" data-mes></p>
+  <p class="calc__linea">{c.resultadoAno} <strong data-ano></strong>.</p>
+</template>
+
+<style>
+  .calc__caja {
+    display: grid;
+    padding: 0;
+    overflow: hidden;
+  }
+  @media (min-width: 56rem) {
+    .calc__caja {
+      grid-template-columns: 1.15fr 1fr;
+    }
+  }
+  .calc__form {
+    display: grid;
+    gap: var(--e-5);
+    padding: clamp(1.25rem, 1rem + 2vw, 2.5rem);
+  }
+  .calc__form input {
+    max-width: 14rem;
+  }
+  .calc__resultado {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--e-4);
+    padding: clamp(1.5rem, 1rem + 2vw, 2.75rem);
+    background:
+      radial-gradient(circle at 100% 0%, rgb(217 162 115 / 0.25), transparent 55%),
+      var(--fondo);
+  }
+  .calc__resultado :global(p) {
+    margin: 0;
+  }
+  .calc__vacio {
+    font-size: 1.25rem;
+    font-weight: var(--peso-medio);
+  }
+  :global(.calc__cifra) {
+    color: var(--acento-grande);
+    font-size: clamp(2.5rem, 2rem + 3vw, 4rem);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+  :global(.calc__linea) {
+    font-size: 1.15rem;
+  }
+  .calc__aviso {
+    color: var(--texto-suave);
+    font-size: var(--texto-pequeno);
+    padding-top: var(--e-3);
+    border-top: 1px solid var(--borde);
+  }
+  .calc__resultado .boton {
+    align-self: flex-start;
+  }
+  .calc__nojs {
+    margin: 0;
+    padding: var(--e-4);
+    border-radius: var(--radio);
+    background: var(--fondo-alterno);
+  }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-calc]');
+  const salida = document.querySelector<HTMLElement>('[data-calc-resultado]');
+  const plantilla = document.querySelector<HTMLTemplateElement>('#calc-plantilla');
+  const vacio = salida?.innerHTML ?? '';
+  const euros = new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+  let temporizador: number | undefined;
+
+  const leer = (n: string, max: number) => {
+    const el = form?.elements.namedItem(n) as HTMLInputElement | null;
+    if (!el || el.value.trim() === '') return null;
+    const v = Number(el.value.replace(',', '.'));
+    return Number.isFinite(v) && v >= 0 ? Math.min(v, max) : null;
+  };
+
+  const calcular = () => {
+    if (!salida || !plantilla) return;
+    const perdidas = leer('perdidas', 500);
+    const decada10 = leer('decada10', 10);
+    const valor = leer('valor', 100000);
+    if (perdidas === null || decada10 === null || valor === null) {
+      salida.innerHTML = vacio;
+      return;
+    }
+    const anual = perdidas * 52 * (decada10 / 10) * valor;
+    const mensual = anual / 12;
+    const nodo = plantilla.content.cloneNode(true) as DocumentFragment;
+    nodo.querySelector('[data-mes]')!.textContent = euros.format(mensual);
+    nodo.querySelector('[data-ano]')!.textContent = euros.format(anual);
+    salida.replaceChildren(nodo);
+  };
+
+  // Se espera un poco tras teclear para que el lector de pantalla no lea cada cifra
+  form?.addEventListener('input', () => {
+    clearTimeout(temporizador);
+    temporizador = window.setTimeout(calcular, 400);
+  });
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    calcular();
+  });
+</script>

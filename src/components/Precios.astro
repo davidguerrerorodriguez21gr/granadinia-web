@@ -1,0 +1,273 @@
+---
+/** Sección de precios. Se oculta entera con MOSTRAR_PRECIOS = false en sitio.ts */
+import Icono from './Icono.astro';
+import { sitio, whatsappConTexto } from '../config/sitio';
+import { precios as t, comunes } from '../content/textos';
+
+const libres = sitio.PLAZAS_FUNDADOR_LIBRES;
+const total = sitio.PLAZAS_FUNDADOR_TOTAL;
+const pendiente = (s: string) => s.replace(/\[(PENDIENTE|CONFIRMAR)[^\]]*\]/g, (m) => `<span class="pendiente">${m}</span>`);
+---
+
+{
+  sitio.MOSTRAR_PRECIOS && (
+    <section id="precios" class="seccion" aria-labelledby="precios-titulo">
+      <div class="contenedor">
+        <header class="encabezado encabezado--centro aparece">
+          <p class="antetitulo">{t.antetitulo}</p>
+          <h2 id="precios-titulo">{t.titulo}</h2>
+        </header>
+
+        <div class="planes">
+          <article class="plan plan--destacado aparece" aria-labelledby="plan-principal">
+            <p class="plan__etiqueta">{t.oferta.etiqueta}</p>
+            <h3 id="plan-principal">{t.oferta.nombre}</h3>
+            <p class="plan__precio">
+              <span class="plan__cifra">{sitio.PRECIO_FUNDADOR} €</span>
+              <span class="plan__iva" set:html={pendiente(sitio.IVA)} />
+            </p>
+            <p class="plan__nota">
+              Para los {total} primeros negocios. Después, {sitio.PRECIO_NORMAL}.
+            </p>
+            {libres > 0 ? (
+              <p class="plan__plazas">
+                <span class="plan__plazas-barra" aria-hidden="true">
+                  {Array.from({ length: total }, (_, i) => (
+                    <span class:list={['punto', { libre: i < libres }]} />
+                  ))}
+                </span>
+                <span class="plan__plazas-texto">Quedan {libres} de {total} plazas</span>
+              </p>
+            ) : (
+              <p class="plan__plazas">Plazas de precio fundador agotadas</p>
+            )}
+            <ul class="plan__lista">
+              {t.oferta.incluye.map((x) => (
+                <li>
+                  <Icono nombre="check" />
+                  {x}
+                </li>
+              ))}
+            </ul>
+            <p class="plan__garantia">
+              <Icono nombre="escudo" />
+              {t.oferta.garantia}
+            </p>
+            <a class="boton boton--whatsapp boton--grande" href={whatsappConTexto(`Hola David, me interesa una plaza de “${t.oferta.nombre}” a precio fundador.`)} rel="noopener">
+              <Icono nombre="whatsapp" />
+              {t.oferta.boton}
+              <span class="sr-only">{comunes.seAbreWhatsApp}</span>
+            </a>
+          </article>
+
+          <div class="planes__lado">
+            <article class="plan aparece" style="--retraso:100ms" aria-labelledby="plan-mantenimiento">
+              <p class="plan__etiqueta plan__etiqueta--suave">{t.mantenimiento.etiqueta}</p>
+              <h3 id="plan-mantenimiento">{t.mantenimiento.nombre}</h3>
+              <p class="plan__precio">
+                <span class="plan__desde">desde</span>
+                <span class="plan__cifra plan__cifra--peque">{sitio.MANTENIMIENTO_DESDE} €</span>
+                <span class="plan__iva">/mes</span>
+              </p>
+              <ul class="plan__lista">
+                {sitio.MANTENIMIENTO_INCLUYE.map((x) => (
+                  <li>
+                    <Icono nombre="check" />
+                    {x}
+                  </li>
+                ))}
+              </ul>
+              <p class="plan__nota">{sitio.MANTENIMIENTO_NOTA} {sitio.PERMANENCIA}.</p>
+              <a class="boton boton--secundario" href={whatsappConTexto('Hola David, me gustaría saber más sobre el mantenimiento mensual.')} rel="noopener">
+                {t.mantenimiento.boton}
+                <span class="sr-only">{comunes.seAbreWhatsApp}</span>
+              </a>
+            </article>
+
+            <article class="plan plan--otros aparece" style="--retraso:180ms" aria-labelledby="plan-otros">
+              <h3 id="plan-otros">{t.otros.titulo}</h3>
+              <p>{t.otros.texto}</p>
+              <ul class="plan__lista plan__lista--puntos">
+                {t.otros.lista.map((x) => (
+                  <li>{x}</li>
+                ))}
+              </ul>
+              <a class="boton boton--secundario" href={whatsappConTexto('Hola David, quería preguntarte por otros servicios de GranadinIA.')} rel="noopener">
+                {t.otros.boton}
+                <span class="sr-only">{comunes.seAbreWhatsApp}</span>
+              </a>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .planes {
+    display: grid;
+    gap: var(--e-5);
+    align-items: start;
+  }
+  @media (min-width: 60rem) {
+    .planes {
+      grid-template-columns: 1.1fr 1fr;
+    }
+  }
+  .planes__lado {
+    display: grid;
+    gap: var(--e-5);
+  }
+  .plan {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: clamp(1.25rem, 1rem + 1.5vw, 2rem);
+    background: var(--superficie);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio-grande);
+    box-shadow: var(--sombra);
+  }
+  .plan h3 {
+    margin-bottom: var(--e-2);
+  }
+  .plan--destacado {
+    align-items: center;
+    text-align: center;
+    padding-top: clamp(3rem, 2.5rem + 2vw, 4.5rem);
+    border: 2px solid var(--acento);
+    border-radius: 16rem 16rem var(--radio-grande) var(--radio-grande);
+    box-shadow: var(--sombra-alta);
+  }
+  .plan--destacado .plan__precio,
+  .plan--destacado .plan__plazas {
+    justify-content: center;
+  }
+  .plan--destacado .plan__lista {
+    text-align: left;
+  }
+  .plan__etiqueta {
+    margin: 0 0 var(--e-3);
+    padding: 0.25rem 0.8rem;
+    border-radius: 999px;
+    background: var(--boton-fondo);
+    color: var(--boton-texto);
+    font-size: 0.9rem;
+    font-weight: var(--peso-fuerte);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .plan__etiqueta--suave {
+    background: var(--fondo-alterno);
+    color: var(--acento);
+  }
+  .plan__precio {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.6rem;
+    margin: 0 0 var(--e-2);
+  }
+  .plan__cifra {
+    color: var(--titulo);
+    font-size: clamp(3rem, 2.5rem + 2.5vw, 4.25rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+  .plan__cifra--peque {
+    font-size: 2.75rem;
+  }
+  .plan__desde,
+  .plan__iva {
+    color: var(--texto-suave);
+    font-size: var(--texto-pequeno);
+    font-weight: var(--peso-medio);
+  }
+  .plan__nota {
+    color: var(--texto-suave);
+    font-size: var(--texto-pequeno);
+  }
+  .plan__plazas {
+    display: flex;
+    align-items: center;
+    gap: var(--e-3);
+    margin: 0 0 var(--e-4);
+    font-weight: var(--peso-fuerte);
+    color: var(--acento);
+  }
+  .plan__plazas-barra {
+    display: flex;
+    gap: 4px;
+  }
+  .punto {
+    width: 0.85rem;
+    height: 0.85rem;
+    border-radius: 50%;
+    border: 2px solid var(--acento);
+  }
+  .punto.libre {
+    background: var(--acento);
+  }
+  .plan__lista {
+    display: grid;
+    gap: var(--e-2);
+    margin: 0 0 var(--e-5);
+    padding: 0;
+    list-style: none;
+  }
+  .plan__lista li {
+    display: flex;
+    gap: var(--e-2);
+    align-items: flex-start;
+  }
+  .plan__lista :global(svg) {
+    flex: none;
+    width: 1.3rem;
+    height: 1.3rem;
+    margin-top: 0.2rem;
+    color: var(--oliva);
+    stroke-width: 3;
+  }
+  .plan__plazas {
+    flex-wrap: wrap;
+  }
+  .plan__plazas-texto {
+    white-space: nowrap;
+  }
+  .plan__garantia {
+    text-align: left;
+  }
+  .plan__lista--puntos {
+    padding-left: 1.2rem;
+    list-style: '·  ';
+  }
+  .plan__lista--puntos li {
+    display: list-item;
+  }
+  .plan__garantia {
+    display: flex;
+    gap: var(--e-2);
+    align-items: center;
+    width: 100%;
+    padding: var(--e-3) var(--e-4);
+    border-radius: var(--radio);
+    background: var(--fondo-alterno);
+    font-weight: var(--peso-fuerte);
+  }
+  .plan__garantia :global(svg) {
+    flex: none;
+    width: 1.75rem;
+    height: 1.75rem;
+    color: var(--oliva);
+  }
+  .plan--destacado .boton {
+    width: 100%;
+  }
+  .plan--otros {
+    background: var(--fondo-alterno);
+    box-shadow: none;
+  }
+</style>
