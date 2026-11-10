@@ -1,6 +1,6 @@
 ---
 import Legal from '../layouts/Legal.astro';
-import { sitio } from '../config/sitio';
+import { sitio, telefonoTexto } from '../config/sitio';
 ---
 
 <Legal
@@ -24,7 +24,7 @@ import { sitio } from '../config/sitio';
     <div><dt>NIF</dt><dd><span class="pendiente">{sitio.NIF}</span></dd></div>
     <div><dt>Domicilio</dt><dd><span class="pendiente">{sitio.DOMICILIO_NOTIFICACIONES}</span></dd></div>
     <div><dt>Correo de contacto</dt><dd><a href={`mailto:${sitio.CORREO_CONTACTO}`}>{sitio.CORREO_CONTACTO}</a></dd></div>
-    <div><dt>Teléfono</dt><dd>{sitio.TELEFONO_VISIBLE}</dd></div>
+    <div><dt>Teléfono</dt><dd>{telefonoTexto}</dd></div>
   </dl>
 
   <h2>2. Qué datos se tratan</h2>
@@ -76,7 +76,7 @@ import { sitio } from '../config/sitio';
     No se ceden datos a terceros salvo obligación legal. Para funcionar se usan estos proveedores, que tratan datos por
     cuenta del responsable o según el canal que elijas:
   </p>
-  <div class="tabla">
+  <section class="tabla" tabindex="0" aria-label="Proveedores que tratan datos">
     <table>
       <thead>
         <tr><th scope="col">Proveedor</th><th scope="col">Para qué</th><th scope="col">Cuándo</th></tr>
@@ -92,7 +92,7 @@ import { sitio } from '../config/sitio';
         <tr><td><span class="pendiente">[PENDIENTE: gestoría / programa de facturación]</span></td><td>Facturación</td><td>Si contratas</td></tr>
       </tbody>
     </table>
-  </div>
+  </section>
 
   <h3>Transferencias internacionales</h3>
   <p>

@@ -40,6 +40,7 @@ const campos = [
             </div>
           ))
         }
+        <button class="boton boton--secundario calc__calcular" type="submit">{c.calcular}</button>
         <noscript><p class="calc__nojs">{c.sinJs}</p></noscript>
       </form>
 
@@ -118,6 +119,9 @@ const campos = [
   }
   .calc__resultado .boton {
     align-self: flex-start;
+  }
+  .calc__calcular {
+    justify-self: start;
   }
   .calc__nojs {
     margin: 0;

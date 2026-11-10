@@ -27,7 +27,7 @@ function mascara(esCapa) {
   return sharp(out, { raw: { width: info.width, height: info.height, channels: 1 } }).png().toBuffer();
 }
 
-const oscuro = (r, g, b) => r < 135 && g < 95;
+const oscuro = (r, g) => r < 135 && g < 95;
 const cobre = (r, g, b) => !oscuro(r, g, b) && r > 130 && r < 225 && g < 170 && b < 125 && r - b > 60;
 
 const extraerD = (svg) =>

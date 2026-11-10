@@ -2,7 +2,7 @@
 // Uso: npm i --no-save @imgly/background-removal-node && node scripts/quitar-fondo.mjs
 import { removeBackground } from '@imgly/background-removal-node';
 import sharp from 'sharp';
-import { readFile, writeFile } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 
 const entrada = await readFile('marca-origen/foto-david-original.jpg');
 const blob = new Blob([entrada], { type: 'image/jpeg' });

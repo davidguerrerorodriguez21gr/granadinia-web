@@ -152,6 +152,7 @@ export const calculadora = {
   resultadoAno: 'Al año, unos',
   aviso: 'Es solo una cuenta orientativa con los números que tú has puesto. No es una promesa de resultados.',
   sinJs: 'La calculadora necesita JavaScript. Si lo tienes desactivado, escríbeme y hacemos la cuenta juntos.',
+  calcular: 'Calcular',
   boton: 'Quiero dejar de perder clientes',
 };
 

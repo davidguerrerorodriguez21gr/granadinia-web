@@ -14,7 +14,7 @@ html {
   scroll-behavior: smooth;
   /* La cabecera fija nunca tapa el destino de un ancla ni el foco (WCAG 2.4.11) */
   scroll-padding-top: calc(var(--alto-cabecera) + var(--e-5));
-  scroll-padding-bottom: 5.5rem; /* barra inferior en móvil */
+  scroll-padding-bottom: 6.5rem; /* barra inferior en móvil */
 }
 
 body {

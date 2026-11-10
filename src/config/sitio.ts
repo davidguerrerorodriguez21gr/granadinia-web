@@ -89,6 +89,9 @@ export const whatsappConTexto = (texto: string = sitio.WHATSAPP_MENSAJE) =>
 
 export const telefonoHref = `tel:${sitio.TELEFONO_E164}`;
 
+/** Teléfono para mostrar, con espacios que no se parten al cambiar de línea. */
+export const telefonoTexto = sitio.TELEFONO_VISIBLE.replace(/ /g, '\u00a0');
+
 export const correoHref = (asunto: string = sitio.CORREO_ASUNTO, cuerpo?: string) =>
   `mailto:${sitio.CORREO_CONTACTO}?subject=${encodeURIComponent(asunto)}${
     cuerpo ? `&body=${encodeURIComponent(cuerpo)}` : ''

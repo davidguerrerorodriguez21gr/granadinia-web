@@ -1,7 +1,7 @@
 ---
 import Logo from './Logo.astro';
 import Icono from './Icono.astro';
-import { sitio, whatsappConTexto, telefonoHref } from '../config/sitio';
+import { sitio, whatsappConTexto, telefonoHref, telefonoTexto } from '../config/sitio';
 import { navegacion, comunes } from '../content/textos';
 
 interface Props {
@@ -67,7 +67,7 @@ const wa = whatsappConTexto();
 </header>
 
 <!-- Barra inferior fija en móvil -->
-<div class="barra-movil" aria-label="Contacto rápido" role="region">
+<section class="barra-movil" aria-label="Contacto rápido">
   <a class="boton boton--whatsapp" href={wa} rel="noopener">
     <Icono nombre="whatsapp" />
     {comunes.botonWhatsAppCorto}
@@ -76,9 +76,9 @@ const wa = whatsappConTexto();
   <a class="boton" href={telefonoHref}>
     <Icono nombre="telefono" />
     {comunes.botonLlamar}
-    <span class="sr-only">al {sitio.TELEFONO_VISIBLE} {comunes.seAbreTelefono}</span>
+    <span class="sr-only">al {telefonoTexto} {comunes.seAbreTelefono}</span>
   </a>
-</div>
+</section>
 
 <style>
   .cabecera {
@@ -322,11 +322,16 @@ const wa = whatsappConTexto();
       padding: var(--e-2) var(--margen) calc(var(--e-2) + env(safe-area-inset-bottom));
       background: var(--cabecera-fondo);
       border-top: 1px solid var(--borde);
+      transition: transform var(--medio) var(--curva);
       -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);
     }
     :global(body) {
       padding-bottom: calc(4.5rem + env(safe-area-inset-bottom));
+    }
+    /* Mientras se escribe en un campo (y sale el teclado del móvil) la barra se aparta */
+    :global(body:has(input:focus, textarea:focus)) .barra-movil {
+      transform: translateY(110%);
     }
   }
 

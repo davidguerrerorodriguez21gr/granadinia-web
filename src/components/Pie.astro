@@ -1,7 +1,7 @@
 ---
 import Logo from './Logo.astro';
 import Icono from './Icono.astro';
-import { sitio, whatsappConTexto, telefonoHref, correoHref } from '../config/sitio';
+import { sitio, whatsappConTexto, telefonoHref, correoHref, telefonoTexto } from '../config/sitio';
 import { pie as t, comunes } from '../content/textos';
 const ano = new Date().getFullYear();
 ---
@@ -9,7 +9,8 @@ const ano = new Date().getFullYear();
 <footer class="pie tema-noche">
   <div class="contenedor pie__rejilla">
     <div class="pie__marca">
-      <Logo lema />
+      <Logo />
+      <p class="pie__lema">{sitio.LEMA_LOGO}</p>
       <p>{sitio.DESCRIPTOR}. {sitio.UBICACION}.</p>
     </div>
 
@@ -26,7 +27,7 @@ const ano = new Date().getFullYear();
           <a href={whatsappConTexto()} rel="noopener"><Icono nombre="whatsapp" />WhatsApp <span class="sr-only">{comunes.seAbreWhatsApp}</span></a>
         </li>
         <li>
-          <a href={telefonoHref}><Icono nombre="telefono" />{sitio.TELEFONO_VISIBLE}</a>
+          <a href={telefonoHref}><Icono nombre="telefono" />{telefonoTexto}</a>
         </li>
         <li>
           <a href={correoHref()}><Icono nombre="correo" />{sitio.CORREO_CONTACTO}</a>
@@ -71,6 +72,13 @@ const ano = new Date().getFullYear();
   .pie__marca p {
     margin-top: var(--e-4);
     color: var(--texto-suave);
+  }
+  .pie__marca .pie__lema {
+    margin-top: var(--e-2);
+    font-size: 0.8rem;
+    font-weight: var(--peso-fuerte);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
   .pie__titulo {
     margin-bottom: var(--e-3);

@@ -36,7 +36,7 @@ import { solucion } from '../content/textos';
       <div class="piezas__paneles">
         {
           solucion.piezas.map((p, i) => (
-            <article class="pieza aparece" id={`pieza-${p.id}`} data-panel style={`--retraso:${i * 60}ms`}>
+            <div class="pieza aparece" id={`pieza-${p.id}`} data-panel style={`--retraso:${i * 60}ms`}>
               <div class="pieza__texto">
                 <p class="pieza__num" aria-hidden="true">
                   {String(i + 1).padStart(2, '0')}
@@ -54,7 +54,7 @@ import { solucion } from '../content/textos';
               <div class="pieza__dibujo">
                 <Ilustracion tipo={p.id} />
               </div>
-            </article>
+            </div>
           ))
         }
       </div>

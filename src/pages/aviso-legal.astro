@@ -1,6 +1,6 @@
 ---
 import Legal from '../layouts/Legal.astro';
-import { sitio } from '../config/sitio';
+import { sitio, telefonoTexto } from '../config/sitio';
 ---
 
 <Legal
@@ -24,7 +24,7 @@ import { sitio } from '../config/sitio';
     <div><dt>NIF</dt><dd><span class="pendiente">{sitio.NIF}</span></dd></div>
     <div><dt>Domicilio</dt><dd><span class="pendiente">{sitio.DOMICILIO_NOTIFICACIONES}</span></dd></div>
     <div><dt>Correo electrónico</dt><dd><a href={`mailto:${sitio.CORREO_CONTACTO}`}>{sitio.CORREO_CONTACTO}</a></dd></div>
-    <div><dt>Teléfono</dt><dd><a href={`tel:${sitio.TELEFONO_E164}`}>{sitio.TELEFONO_VISIBLE}</a></dd></div>
+    <div><dt>Teléfono</dt><dd><a href={`tel:${sitio.TELEFONO_E164}`}>{telefonoTexto}</a></dd></div>
     <div><dt>Datos de registro</dt><dd><span class="pendiente">{sitio.DATOS_REGISTRO}</span></dd></div>
     <div><dt>Sitio web</dt><dd>{sitio.DOMINIO_PRINCIPAL.replace('https://', '')}</dd></div>
   </dl>

@@ -1,6 +1,6 @@
 ---
 import Icono from './Icono.astro';
-import { sitio, whatsappConTexto, telefonoHref, correoHref } from '../config/sitio';
+import { sitio, whatsappConTexto, telefonoHref, correoHref, telefonoTexto } from '../config/sitio';
 import { contacto as t, comunes } from '../content/textos';
 
 const f = t.formulario;
@@ -37,7 +37,7 @@ const filasRgpd = t.rgpd.filas.map(([k, v]) => [
         <a class="canal" href={telefonoHref}>
           <Icono nombre="telefono" />
           <span class="canal__titulo">{t.canales.llamar.titulo}</span>
-          <span class="canal__dato">{sitio.TELEFONO_VISIBLE}</span>
+          <span class="canal__dato">{telefonoTexto}</span>
           <span class="sr-only">{comunes.seAbreTelefono}</span>
         </a>
       </li>
