@@ -1,0 +1,51 @@
+---
+/**
+ * Datos estructurados (JSON-LD) de la portada:
+ * - ProfessionalService (subtipo de LocalBusiness) con los datos de sitio.ts
+ * - FAQPage generada con las MISMAS preguntas y respuestas que se ven en la página
+ */
+import { sitio } from '../config/sitio';
+import { preguntas } from '../content/textos';
+
+const url = sitio.DOMINIO_PRINCIPAL;
+const negocio: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  '@id': `${url}/#negocio`,
+  name: sitio.NOMBRE_MARCA,
+  description:
+    'Marketing y automatizaciones sencillas para negocios de Granada: ficha de Google optimizada, WhatsApp Business, sistema de reseñas y seguimiento de presupuestos, instalado en 14 días.',
+  url: `${url}/`,
+  logo: `${url}/icon-512.png`,
+  image: `${url}/og-image.png`,
+  telephone: sitio.TELEFONO_E164,
+  email: sitio.CORREO_CONTACTO,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: sitio.LOCALIDAD,
+    postalCode: sitio.CODIGO_POSTAL,
+    addressRegion: sitio.PROVINCIA,
+    addressCountry: 'ES',
+  },
+  areaServed: sitio.ZONA_PRESENCIAL.map((name) => ({ '@type': 'City', name })),
+  founder: { '@type': 'Person', name: sitio.RESPONSABLE },
+  sameAs: [sitio.INSTAGRAM_URL],
+  knowsLanguage: 'es',
+};
+if (sitio.MOSTRAR_PRECIOS) {
+  negocio.priceRange = `${sitio.PRECIO_FUNDADOR}–450 €`;
+}
+
+const faq = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: preguntas.lista.map((x) => ({
+    '@type': 'Question',
+    name: x.p,
+    acceptedAnswer: { '@type': 'Answer', text: x.r },
+  })),
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(negocio)} />
+<script type="application/ld+json" set:html={JSON.stringify(faq)} />

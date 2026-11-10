@@ -216,8 +216,7 @@ export const sobreMi = {
     'La IA la uso yo para trabajar más rápido; tú solo ves el resultado: más clientes atendidos y menos tiempo con el móvil.',
     'Te lo explico sin tecnicismos y, si quieres, voy a tu negocio.',
   ],
-  fotoPendiente: '[PENDIENTE: foto de David]',
-  fotoAlt: 'David, de GranadinIA, sonriendo en Maracena',
+  fotoAlt: 'David, de GranadinIA, sonriendo con los brazos cruzados',
 };
 
 /* ── 9. Testimonios (ocultos mientras no haya reales) ──────── */
@@ -249,7 +248,7 @@ export const preguntas = {
     },
     {
       p: '¿Hay permanencia?',
-      r: 'No. La instalación se paga una vez y el mantenimiento es opcional, sin permanencia.',
+      r: 'No. La instalación se paga una vez. El mantenimiento es opcional y sin permanencia: si lo tienes, el soporte y los cambios están incluidos; si no, cada cambio posterior se presupuesta aparte.',
     },
     {
       p: '¿Trabajas fuera de Granada?',

@@ -1,0 +1,141 @@
+---
+import Legal from '../layouts/Legal.astro';
+import { sitio } from '../config/sitio';
+---
+
+<Legal
+  titulo="Política de privacidad"
+  descripcion="Cómo trata GranadinIA los datos que le envías por WhatsApp, correo o teléfono, conforme al RGPD y la LOPDGDD."
+  actualizado="10 de noviembre de 2026"
+>
+  <p class="aviso-borrador">
+    Borrador pendiente de revisión por un gestor o abogado, en especial el apartado de transferencias internacionales.
+  </p>
+
+  <p>
+    Esta política explica qué datos personales se tratan cuando contactas con {sitio.NOMBRE_MARCA}, para qué y con qué
+    derechos, conforme al Reglamento (UE) 2016/679 (RGPD) y a la Ley Orgánica 3/2018, de Protección de Datos Personales y
+    garantía de los derechos digitales (LOPDGDD).
+  </p>
+
+  <h2>1. Responsable del tratamiento</h2>
+  <dl>
+    <div><dt>Responsable</dt><dd>{sitio.RESPONSABLE} ({sitio.NOMBRE_MARCA})</dd></div>
+    <div><dt>NIF</dt><dd><span class="pendiente">{sitio.NIF}</span></dd></div>
+    <div><dt>Domicilio</dt><dd><span class="pendiente">{sitio.DOMICILIO_NOTIFICACIONES}</span></dd></div>
+    <div><dt>Correo de contacto</dt><dd><a href={`mailto:${sitio.CORREO_CONTACTO}`}>{sitio.CORREO_CONTACTO}</a></dd></div>
+    <div><dt>Teléfono</dt><dd>{sitio.TELEFONO_VISIBLE}</dd></div>
+  </dl>
+
+  <h2>2. Qué datos se tratan</h2>
+  <p>
+    <strong>La web en sí no guarda ningún dato personal.</strong> No tiene base de datos, formularios que envíen
+    información a un servidor, analítica ni herramientas de seguimiento. El formulario de contacto solo prepara un mensaje
+    en tu navegador y abre WhatsApp o tu programa de correo; eres tú quien decide si lo envía. La calculadora hace la
+    cuenta en tu navegador y no envía nada.
+  </p>
+  <p>Se tratan únicamente los datos que tú envías por WhatsApp, correo electrónico o teléfono, por ejemplo:</p>
+  <ul>
+    <li>Nombre y datos de contacto (teléfono, correo electrónico).</li>
+    <li>Tipo de negocio y localidad.</li>
+    <li>Lo que nos cuentes sobre tu consulta.</li>
+    <li>Si llegas a contratar, los datos necesarios para prestar el servicio y facturar.</li>
+  </ul>
+  <p>No envíes datos especialmente protegidos (salud, ideología, etc.): no son necesarios para ninguna consulta.</p>
+
+  <h2>3. Para qué se usan</h2>
+  <ul>
+    <li>Responder a tu consulta.</li>
+    <li>Preparar un presupuesto si lo pides.</li>
+    <li>Si contratas, gestionar la relación comercial: prestar el servicio, facturar y cumplir obligaciones legales.</li>
+  </ul>
+  <p>No se usan para enviarte publicidad sin tu permiso ni se toman decisiones automatizadas con ellos.</p>
+
+  <h2>4. Base legal</h2>
+  <ul>
+    <li>
+      <strong>Medidas precontractuales a petición tuya</strong> (art. 6.1.b RGPD): responder a tu consulta y prepararte un
+      presupuesto.
+    </li>
+    <li><strong>Tu consentimiento</strong> (art. 6.1.a RGPD): al escribirnos y aceptar esta política.</li>
+    <li>
+      <strong>Ejecución del contrato y obligaciones legales</strong> (art. 6.1.b y 6.1.c RGPD): si contratas un servicio.
+    </li>
+  </ul>
+
+  <h2>5. Cuánto tiempo se conservan</h2>
+  <p>
+    Los datos de una consulta se conservan el tiempo necesario para responderla y, si no hay contratación, se eliminan
+    como máximo en <span class="pendiente">[PENDIENTE: plazo, p. ej. 12 meses]</span>. Si hay relación comercial, se
+    conservan mientras dure y, después, durante los plazos que exige la ley (por ejemplo, las obligaciones fiscales y
+    mercantiles).
+  </p>
+
+  <h2>6. Destinatarios y encargados del tratamiento</h2>
+  <p>
+    No se ceden datos a terceros salvo obligación legal. Para funcionar se usan estos proveedores, que tratan datos por
+    cuenta del responsable o según el canal que elijas:
+  </p>
+  <div class="tabla">
+    <table>
+      <thead>
+        <tr><th scope="col">Proveedor</th><th scope="col">Para qué</th><th scope="col">Cuándo</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Zoho Corporation (Zoho Mail)</td><td>Correo electrónico</td><td>Si escribes a {sitio.CORREO_CONTACTO}</td></tr>
+        <tr><td>WhatsApp Ireland Ltd. (grupo Meta)</td><td>Mensajería</td><td>Si eliges WhatsApp</td></tr>
+        <tr>
+          <td>GitHub, Inc. (GitHub Pages)</td>
+          <td>Alojamiento de la web</td>
+          <td>Al visitarla: puede registrar tu dirección IP en sus registros técnicos por seguridad</td>
+        </tr>
+        <tr><td><span class="pendiente">[PENDIENTE: gestoría / programa de facturación]</span></td><td>Facturación</td><td>Si contratas</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Transferencias internacionales</h3>
+  <p>
+    <span class="pendiente">[REVISAR con gestor o abogado]</span> Algunos de estos proveedores pertenecen a grupos con sede
+    en Estados Unidos (Meta, GitHub, Zoho), por lo que pueden producirse transferencias internacionales de datos. Se
+    realizan con las garantías previstas en el RGPD: el Marco de Privacidad de Datos UE-EE. UU. cuando la empresa está
+    adherida y, en su defecto, cláusulas contractuales tipo aprobadas por la Comisión Europea. El correo se aloja en el
+    servicio europeo de Zoho (zoho.eu).
+  </p>
+
+  <h2>7. Tus derechos</h2>
+  <p>Puedes ejercer en cualquier momento tus derechos de:</p>
+  <ul>
+    <li><strong>Acceso</strong>: saber qué datos tuyos se tratan.</li>
+    <li><strong>Rectificación</strong>: corregir datos inexactos.</li>
+    <li><strong>Supresión</strong>: pedir que se borren.</li>
+    <li><strong>Oposición</strong> y <strong>limitación</strong> del tratamiento.</li>
+    <li><strong>Portabilidad</strong>: recibir tus datos en un formato de uso común.</li>
+    <li><strong>Retirar tu consentimiento</strong>, sin que afecte a lo tratado antes.</li>
+  </ul>
+  <p>
+    Para ejercerlos, escribe a <a href={`mailto:${sitio.CORREO_CONTACTO}?subject=${encodeURIComponent('Protección de datos')}`}>{sitio.CORREO_CONTACTO}</a>
+    indicando qué derecho quieres ejercer. Puede pedirse que acredites tu identidad. Se te responderá en el plazo máximo de
+    un mes.
+  </p>
+  <p>
+    Si crees que no se han respetado tus derechos, puedes presentar una reclamación ante la Agencia Española de
+    Protección de Datos (<a href="https://www.aepd.es" rel="noopener">www.aepd.es</a>).
+  </p>
+
+  <h2>8. Seguridad</h2>
+  <p>
+    Se aplican medidas razonables para proteger tus datos: conexión cifrada (HTTPS) en toda la web y acceso protegido a
+    las cuentas de correo y mensajería <span class="pendiente">[CONFIRMAR: contraseña segura y verificación en dos pasos activadas]</span>.
+  </p>
+
+  <h2>9. Datos de tus clientes</h2>
+  <p>
+    Cuando {sitio.NOMBRE_MARCA} configura herramientas para tu negocio, los datos de tus clientes se quedan en tus propias
+    cuentas (tu Google, tu WhatsApp, tu hoja). Si para prestar el servicio fuera necesario acceder a ellos, se firmará el
+    correspondiente contrato de encargo del tratamiento.
+  </p>
+
+  <h2>10. Cambios en esta política</h2>
+  <p>Esta política puede actualizarse. La versión vigente es siempre la publicada en esta página, con su fecha.</p>
+</Legal>

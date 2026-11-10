@@ -15,12 +15,14 @@ import Contacto from '../components/Contacto.astro';
 import Pie from '../components/Pie.astro';
 import Colinas from '../components/Colinas.astro';
 import { sitio } from '../config/sitio';
+import DatosEstructurados from '../components/DatosEstructurados.astro';
 ---
 
 <Base
   titulo="GranadinIA | Marketing e IA para negocios de Granada y Maracena"
   descripcion="Ficha de Google, WhatsApp Business y reseñas en Google para electricistas, fontaneros y negocios de Granada. Lo dejo funcionando en 14 días. Hecho en Maracena."
 >
+  <DatosEstructurados slot="head" />
   <Cabecera />
   <main id="contenido" tabindex="-1">
     <Hero />

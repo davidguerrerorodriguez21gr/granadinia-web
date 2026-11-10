@@ -1,0 +1,86 @@
+---
+import Legal from '../layouts/Legal.astro';
+import { sitio } from '../config/sitio';
+---
+
+<Legal
+  titulo="Aviso legal"
+  descripcion="Aviso legal de GranadinIA: datos del titular, condiciones de uso de la web, propiedad intelectual y legislación aplicable."
+  actualizado="10 de noviembre de 2026"
+>
+  <p class="aviso-borrador">
+    Borrador pendiente de revisión por un gestor o abogado. Faltan datos del titular que se completarán tras el alta como
+    autónomo.
+  </p>
+
+  <h2>1. Datos del titular</h2>
+  <p>
+    En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y de
+    Comercio Electrónico (LSSI-CE), se informa de los datos del titular de este sitio web:
+  </p>
+  <dl>
+    <div><dt>Titular</dt><dd>{sitio.RESPONSABLE}</dd></div>
+    <div><dt>Nombre comercial</dt><dd>{sitio.NOMBRE_MARCA}</dd></div>
+    <div><dt>NIF</dt><dd><span class="pendiente">{sitio.NIF}</span></dd></div>
+    <div><dt>Domicilio</dt><dd><span class="pendiente">{sitio.DOMICILIO_NOTIFICACIONES}</span></dd></div>
+    <div><dt>Correo electrónico</dt><dd><a href={`mailto:${sitio.CORREO_CONTACTO}`}>{sitio.CORREO_CONTACTO}</a></dd></div>
+    <div><dt>Teléfono</dt><dd><a href={`tel:${sitio.TELEFONO_E164}`}>{sitio.TELEFONO_VISIBLE}</a></dd></div>
+    <div><dt>Datos de registro</dt><dd><span class="pendiente">{sitio.DATOS_REGISTRO}</span></dd></div>
+    <div><dt>Sitio web</dt><dd>{sitio.DOMINIO_PRINCIPAL.replace('https://', '')}</dd></div>
+  </dl>
+
+  <h2>2. Objeto</h2>
+  <p>
+    Esta web informa sobre los servicios de {sitio.NOMBRE_MARCA}: configuración y optimización de la ficha de Google
+    (Perfil de Empresa), WhatsApp Business, sistemas para pedir reseñas, hojas de seguimiento de presupuestos, formación y
+    servicios relacionados de marketing para negocios. A través de ella no se realizan ventas ni pagos en línea: la
+    contratación se acuerda directamente con el titular.
+  </p>
+
+  <h2>3. Condiciones de uso</h2>
+  <p>
+    El acceso a la web es gratuito y no requiere registro. Al navegar por ella aceptas usarla de forma lícita, sin dañar
+    su funcionamiento ni los derechos de terceros. El titular puede modificar en cualquier momento los contenidos, el
+    diseño y estas condiciones; la versión aplicable es la publicada cuando accedes.
+  </p>
+  <p>
+    Los precios y la información de los servicios son orientativos y pueden cambiar. La oferta concreta es la que se
+    acuerde por escrito con cada cliente. La calculadora de la web solo hace una cuenta con los datos que tú introduces y
+    no supone ninguna promesa de resultados.
+  </p>
+
+  <h2>4. Propiedad intelectual e industrial</h2>
+  <p>
+    Los textos, ilustraciones, el logotipo, la marca {sitio.NOMBRE_MARCA} y el diseño de esta web pertenecen a su titular
+    o se usan con licencia (por ejemplo, la tipografía Nunito, publicada con licencia SIL Open Font License). No está
+    permitido reproducirlos, distribuirlos ni transformarlos con fines comerciales sin autorización por escrito. Puedes
+    enlazar a la web siempre que no se dé a entender una relación que no existe.
+  </p>
+  <p>
+    Las marcas de terceros que se mencionan (Google, WhatsApp, Instagram y otras) pertenecen a sus propietarios y solo se
+    citan para describir los servicios. {sitio.NOMBRE_MARCA} no está afiliado a esas empresas.
+  </p>
+
+  <h2>5. Responsabilidad</h2>
+  <p>
+    El titular procura que la información sea correcta y esté actualizada, pero no garantiza que no contenga errores ni que
+    la web esté disponible sin interrupciones. No se hace responsable de los daños derivados de un uso indebido de la web
+    ni de causas ajenas a su control.
+  </p>
+  <p>
+    Algunos enlaces llevan a servicios de terceros (WhatsApp, Instagram, Google…). Al usarlos sales de esta web y se
+    aplican las condiciones y políticas de privacidad de esos servicios, sobre los que el titular no tiene control.
+  </p>
+
+  <h2>6. Protección de datos y cookies</h2>
+  <p>
+    El tratamiento de datos personales se explica en la <a href="/privacidad">política de privacidad</a>. El uso de
+    cookies y almacenamiento local se explica en la <a href="/cookies">política de cookies</a>.
+  </p>
+
+  <h2>7. Legislación aplicable y jurisdicción</h2>
+  <p>
+    Estas condiciones se rigen por la legislación española. Para cualquier controversia, las partes se someten a los
+    juzgados y tribunales que correspondan conforme a la ley; si eres consumidor, los de tu domicilio.
+  </p>
+</Legal>

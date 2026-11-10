@@ -67,7 +67,7 @@ const pendiente = (s: string) => s.replace(/\[(PENDIENTE|CONFIRMAR)[^\]]*\]/g, (
               <p class="plan__precio">
                 <span class="plan__desde">desde</span>
                 <span class="plan__cifra plan__cifra--peque">{sitio.MANTENIMIENTO_DESDE} €</span>
-                <span class="plan__iva">/mes</span>
+                <span class="plan__iva">/mes {sitio.IVA}</span>
               </p>
               <ul class="plan__lista">
                 {sitio.MANTENIMIENTO_INCLUYE.map((x) => (

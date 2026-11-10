@@ -62,14 +62,15 @@ export const sitio = {
   PLAZAS_FUNDADOR_TOTAL: 5,
   /** Actualízalo a mano cada vez que entre un negocio fundador. */
   PLAZAS_FUNDADOR_LIBRES: 5,
-  IVA: 'IVA [PENDIENTE: confirmar con gestor]',
+  IVA: '+ IVA',
   MANTENIMIENTO_DESDE: 99,
   MANTENIMIENTO_INCLUYE: [
-    'Control de seguridad de tus cuentas y herramientas',
-    'Actualizaciones de lo que ya tienes instalado, sin coste',
+    'Todo el soporte que necesites, sin pagar aparte',
+    'Cambios y ajustes en lo que ya tienes instalado',
+    'Control de seguridad y actualizaciones',
   ],
   MANTENIMIENTO_NOTA:
-    'Si quieres añadir algo nuevo, te lo presupuesto aparte antes de hacerlo.',
+    'Sin mantenimiento, cualquier cambio posterior se presupuesta aparte.',
   PERMANENCIA: 'Sin permanencia',
   DIAS_INSTALACION: 14,
 

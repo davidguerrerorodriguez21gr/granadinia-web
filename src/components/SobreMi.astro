@@ -1,9 +1,8 @@
 ---
 import { sobreMi as t } from '../content/textos';
-// Cuando tengas la foto: guárdala en src/assets/david.jpg y cambia FOTO a true.
-// import { Image } from 'astro:assets';
-// import foto from '../assets/david.jpg';
-const FOTO = false;
+import { Image } from 'astro:assets';
+// Foto con el fondo quitado (scripts/quitar-fondo.mjs). Para cambiarla, sustituye src/assets/david.png
+import foto from '../assets/david.png';
 ---
 
 <section id="sobre-mi" class="seccion seccion--alterna" aria-labelledby="sobre-mi-titulo">
@@ -13,13 +12,15 @@ const FOTO = false;
         <path d="M14 372V150a136 136 0 0 1 272 0v222" pathLength="1"></path>
       </svg>
       <div class="marco__foto">
-        {
-          FOTO ? null /* <Image src={foto} alt={t.fotoAlt} widths={[320, 640]} sizes="(min-width: 60rem) 24rem, 80vw" /> */ : (
-            <p class="marco__hueco">
-              <span class="pendiente">{t.fotoPendiente}</span>
-            </p>
-          )
-        }
+        <Image
+          src={foto}
+          alt={t.fotoAlt}
+          widths={[340, 680]}
+          sizes="(min-width: 56rem) 22rem, 80vw"
+          format="webp"
+          quality={80}
+          loading="lazy"
+        />
       </div>
     </figure>
 
@@ -54,16 +55,15 @@ const FOTO = false;
     border-radius: 999px 999px var(--radio) var(--radio);
     overflow: hidden;
     background:
-      repeating-linear-gradient(45deg, transparent 0 14px, rgb(184 130 85 / 0.12) 14px 15px),
-      var(--superficie);
-    display: grid;
-    place-items: center;
+      radial-gradient(circle at 50% 35%, rgb(253 245 229 / 0.9), transparent 60%),
+      linear-gradient(180deg, #e9c9a3, #b88255);
     box-shadow: var(--sombra);
   }
   .marco__foto :global(img) {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: 50% 0;
   }
   .marco__hueco {
     margin: 0;

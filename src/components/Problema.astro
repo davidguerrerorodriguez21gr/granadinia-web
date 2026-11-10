@@ -14,26 +14,28 @@ import { problema } from '../content/textos';
     <ul class="problemas">
       {
         problema.tarjetas.map((t, i) => (
-          <li class="problema tarjeta tarjeta--interactiva aparece" style={`--retraso:${i * 90}ms`} data-problema>
-            <span class="problema__icono">
-              <Icono nombre={t.icono} />
-            </span>
-            <h3 class="problema__titulo">{t.problema}</h3>
-            <button
-              class="problema__boton"
-              type="button"
-              aria-expanded="true"
-              aria-controls={`solucion-${i}`}
-              data-problema-boton
-              data-ver={problema.verSolucion}
-              data-ocultar={problema.ocultarSolucion}
-              hidden
-            >
-              <span data-texto>{problema.verSolucion}</span>
-              <span class="problema__mas" aria-hidden="true">
-                <Icono nombre="mas" />
+          <li class="problema-item aparece" style={`--retraso:${i * 90}ms`} data-problema>
+            <div class="problema tarjeta tarjeta--interactiva">
+              <span class="problema__icono">
+                <Icono nombre={t.icono} />
               </span>
-            </button>
+              <h3 class="problema__titulo">{t.problema}</h3>
+              <button
+                class="problema__boton"
+                type="button"
+                aria-expanded="true"
+                aria-controls={`solucion-${i}`}
+                data-problema-boton
+                data-ver={problema.verSolucion}
+                data-ocultar={problema.ocultarSolucion}
+                hidden
+              >
+                <span data-texto>{problema.verSolucion}</span>
+                <span class="problema__mas" aria-hidden="true">
+                  <Icono nombre="mas" />
+                </span>
+              </button>
+            </div>
             <div class="problema__solucion" id={`solucion-${i}`} data-problema-panel>
               <p>
                 <span class="problema__check" aria-hidden="true">
@@ -58,11 +60,14 @@ import { problema } from '../content/textos';
     padding: 0;
     list-style: none;
     max-width: none;
+    /* cada tarjeta mantiene su tamaño: abrir una no estira a las demás */
+    align-items: start;
   }
   .problema {
     display: flex;
     flex-direction: column;
     gap: var(--e-4);
+    min-height: 17rem;
     overflow: hidden;
   }
   .problema::after {
@@ -98,14 +103,33 @@ import { problema } from '../content/textos';
   .problema__boton {
     display: none;
   }
+  /* Contenedor de la solución, debajo de su tarjeta */
+  .problema__solucion {
+    position: relative;
+    margin-top: var(--e-4);
+  }
+  .problema__solucion::before {
+    /* flechita que une el contenedor con su tarjeta */
+    content: '';
+    position: absolute;
+    top: -9px;
+    left: 2rem;
+    width: 16px;
+    height: 16px;
+    background: var(--superficie);
+    border-top: 2px solid var(--oliva);
+    border-left: 2px solid var(--oliva);
+    rotate: 45deg;
+  }
   .problema__solucion p {
     display: flex;
     gap: var(--e-2);
     margin: 0;
-    padding: var(--e-4);
-    border-radius: var(--radio);
-    background: var(--fondo-alterno);
-    border-left: 4px solid var(--oliva);
+    padding: var(--e-4) var(--e-5);
+    border-radius: var(--radio-grande);
+    background: var(--superficie);
+    border: 2px solid var(--oliva);
+    box-shadow: var(--sombra);
     font-weight: var(--peso-medio);
   }
   .problema__check {

@@ -1,0 +1,64 @@
+---
+import Legal from '../layouts/Legal.astro';
+import { sitio } from '../config/sitio';
+---
+
+<Legal
+  titulo="Política de cookies"
+  descripcion="GranadinIA no usa cookies de análisis ni de publicidad. Solo guarda, si tú lo pides, tus preferencias de tema y de animaciones."
+  actualizado="10 de noviembre de 2026"
+>
+  <h2>Resumen</h2>
+  <p>
+    <strong>Esta web no usa cookies</strong>, ni propias ni de terceros, con fines analíticos, publicitarios o de
+    seguimiento. No hay Google Analytics, píxeles de redes sociales, mapas ni vídeos incrustados, ni fuentes cargadas desde
+    servidores externos. Por eso no verás ningún aviso de cookies.
+  </p>
+
+  <h2>Lo único que se guarda: tus preferencias</h2>
+  <p>
+    Si tú lo eliges, la web guarda en el almacenamiento local de tu navegador (<em>localStorage</em>) una preferencia
+    técnica, para recordarla en tu próxima visita. Es estrictamente necesario para darte el servicio que has pedido, no
+    identifica a nadie y nunca sale de tu dispositivo.
+  </p>
+  <div class="tabla">
+    <table>
+      <thead>
+        <tr><th scope="col">Nombre</th><th scope="col">Para qué sirve</th><th scope="col">Cuándo se guarda</th><th scope="col">Duración</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>granadinia-movimiento</code></td>
+          <td>Recordar que has activado «Reducir animaciones».</td>
+          <td>Solo si pulsas ese interruptor.</td>
+          <td>Hasta que lo desactives o borres los datos del navegador.</td>
+        </tr>
+        <tr>
+          <td><code>granadinia-tema</code></td>
+          <td>Recordar si prefieres el modo claro o el oscuro.</td>
+          <td>Solo si pulsas el botón de la luna o el sol.</td>
+          <td>Hasta que borres los datos del navegador.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    Puedes borrarlos cuando quieras desde la configuración de tu navegador (en «Privacidad» o «Datos de sitios web»).
+  </p>
+
+  <h2>Enlaces a otros servicios</h2>
+  <p>
+    Los botones de WhatsApp e Instagram son enlaces normales: no cargan nada de esas empresas mientras navegas por aquí.
+    Si los pulsas, sales de esta web y se aplican las políticas de cookies y privacidad de esos servicios.
+  </p>
+
+  <h2>Si esto cambia</h2>
+  <p>
+    Si en el futuro se añade analítica o cualquier servicio de terceros que use cookies no necesarias, se pedirá tu
+    consentimiento antes de activarlas, con un aviso que te permita aceptarlas o rechazarlas, y se actualizará esta
+    página.
+  </p>
+  <p>
+    Para cualquier duda, escribe a <a href={`mailto:${sitio.CORREO_CONTACTO}`}>{sitio.CORREO_CONTACTO}</a>.
+  </p>
+</Legal>

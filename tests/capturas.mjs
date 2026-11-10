@@ -41,6 +41,12 @@ for (const tema of ['light', 'dark']) {
       // Una captura por sección (Chrome no admite capturas de más de 16 384 px de alto)
       // Oculta lo fijo (cabecera, barra inferior) para que no se repita en cada recorte
       await pagina.addStyleTag({ content: '.cabecera,.barra-movil,.saltar{visibility:hidden!important}' });
+      // Carga ya las imágenes diferidas (loading="lazy") para que salgan en las capturas
+      await pagina.evaluate(async () => {
+        const imgs = [...document.images];
+        imgs.forEach((i) => (i.loading = 'eager'));
+        await Promise.all(imgs.map((i) => (i.complete ? null : new Promise((r) => (i.onload = i.onerror = r)))));
+      });
       const bloques = await pagina.$$('main > section, body > footer');
       for (const [i, bloque] of bloques.entries()) {
         const id = (await bloque.getAttribute('id')) ?? (i === 0 ? 'hero' : `bloque-${i}`);
