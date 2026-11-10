@@ -18,7 +18,7 @@ Fecha: 10 de noviembre de 2026 · Versión revisada: compilación local (`npm ru
 | Peticiones a terceros | ✅ Ninguna: todo se sirve desde el propio dominio |
 | Enlaces wa.me / tel: / mailto: | ✅ Bien codificados; tildes y eñes correctas |
 | Revisión de textos (palabras prohibidas, cifras, testimonios) | ✅ Sin coincidencias |
-| Interacciones (tarjetas, pestañas, calculadora, formulario, interruptores) | ✅ 26 comprobaciones superadas |
+| Interacciones (tarjetas, pestañas, calculadora, formulario, interruptores) | ✅ 30 comprobaciones superadas (más 16 de teclado, privacidad y enlaces) |
 
 Para repetir todo: `npm run build && npm run preview` y, en otra terminal, `npm test`.
 
