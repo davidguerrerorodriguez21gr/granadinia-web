@@ -1,0 +1,76 @@
+# Foto del DNS ANTES de cambiar nada — 2026-11-10 16:48 CET
+# Resolutor: 2a0c:5a80:0:2::1 y consultas directas a los servidores autoritativos
+
+######## granadinia.es (autoritativo: ns2.dondominio.com.)
+== granadinia.es A
+31.214.178.55
+== granadinia.es AAAA
+== granadinia.es CNAME
+== granadinia.es MX
+20 mx2.zoho.eu.
+10 mx.zoho.eu.
+50 mx3.zoho.eu.
+== granadinia.es TXT
+"zoho-verification=zb57906818.zmverify.zoho.eu"
+"v=spf1 include:zohomail.eu include:spf.dondominio.com"
+== granadinia.es CAA
+== granadinia.es NS
+ns1.dondominio.com.
+ns2.dondominio.com.
+== granadinia.es SOA
+ns1.dondominio.com. dnsadmin.dondominio.com. 2026111009 10800 1800 691200 3600
+== www.granadinia.es CNAME
+parkingsrv0.dondominio.com.
+== www.granadinia.es A
+parkingsrv0.dondominio.com.
+== _dmarc.granadinia.es TXT
+parkingsrv0.dondominio.com.
+== zmail._domainkey.granadinia.es TXT
+"v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDe3m9Y162z0zQaH/96G+VCzfhIlWejCxRioBx6wEDroxQo+BmeWeaeuCSBXjBIE065mXIsWi6AjbmlgNem7ZfzFdl30qr7Q5miKYZ9TQOcocZPLjumWxgwODEpeSKcui6o12IdHAtHrcLMHmfkhNRiGaPeissYgYyi1cBpfFlZVwIDAQAB"
+== _github-pages-challenge-davidguerrerorodriguez21gr.granadinia.es TXT
+parkingsrv0.dondominio.com.
+
+######## granadinia.com (autoritativo: ns1.dondominio.com.)
+== granadinia.com A
+31.214.178.55
+== granadinia.com AAAA
+== granadinia.com CNAME
+== granadinia.com MX
+== granadinia.com TXT
+"v=spf1 include:spf.dondominio.com"
+== granadinia.com CAA
+== granadinia.com NS
+ns1.dondominio.com.
+ns2.dondominio.com.
+== granadinia.com SOA
+ns1.dondominio.com. dnsadmin.dondominio.com. 2026111000 10800 1800 691200 3600
+== www.granadinia.com CNAME
+parkingsrv0.dondominio.com.
+== www.granadinia.com A
+parkingsrv0.dondominio.com.
+== _dmarc.granadinia.com TXT
+parkingsrv0.dondominio.com.
+== zmail._domainkey.granadinia.com TXT
+parkingsrv0.dondominio.com.
+== default._domainkey.granadinia.com TXT
+parkingsrv0.dondominio.com.
+== zoho._domainkey.granadinia.com TXT
+parkingsrv0.dondominio.com.
+== selector1._domainkey.granadinia.com TXT
+parkingsrv0.dondominio.com.
+== dkim._domainkey.granadinia.com TXT
+parkingsrv0.dondominio.com.
+== _github-pages-challenge-davidguerrerorodriguez21gr.granadinia.com TXT
+parkingsrv0.dondominio.com.
+
+######## Lectura (añadida a mano)
+# - Existe un registro comodín *.granadinia.es y *.granadinia.com → CNAME parkingsrv0.dondominio.com (parking).
+#   Por eso cualquier nombre inventado (incluidos _dmarc y _github-pages-challenge) "responde" con el parking.
+# - Correo de granadinia.es (Zoho, NO TOCAR):
+#     MX 10 mx.zoho.eu · MX 20 mx2.zoho.eu · MX 50 mx3.zoho.eu
+#     TXT zoho-verification=zb57906818.zmverify.zoho.eu
+#     TXT v=spf1 include:zohomail.eu include:spf.dondominio.com
+#     TXT zmail._domainkey (DKIM de Zoho)
+#     DMARC: no hay registro propio (_dmarc cae en el comodín del parking).
+# - granadinia.com: sin MX, sin DKIM ni DMARC → no tiene correo.
+# - Web actual: A @ 31.214.178.55 y www → parking de DonDominio. Sin AAAA. Sin CAA.
