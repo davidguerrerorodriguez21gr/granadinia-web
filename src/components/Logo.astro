@@ -1,0 +1,72 @@
+---
+/**
+ * Logo horizontal: icono de la Alhambra + “Granadin<span>IA</span>”.
+ * El dibujo es el del logo original vectorizado (scripts/generar-marca.mjs).
+ * El texto va en HTML con la tipografía de la web, para que se lea nítido.
+ */
+import trazos from '../assets/marca/alhambra-paths.json';
+import { sitio } from '../config/sitio';
+
+interface Props {
+  enlace?: boolean;
+  lema?: boolean;
+  clase?: string;
+}
+const { enlace = true, lema = false, clase = '' } = Astro.props;
+const Etiqueta = enlace ? 'a' : 'div';
+---
+
+<Etiqueta
+  class:list={['logo', clase]}
+  {...(enlace ? { href: '/', 'aria-label': `${sitio.NOMBRE_MARCA}, inicio` } : {})}
+>
+  <svg class="logo__icono" viewBox={trazos.viewBox} aria-hidden="true" focusable="false">
+    <path class="logo__oscuro" d={trazos.oscuro}></path>
+    <path class="logo__cobre" d={trazos.cobre}></path>
+  </svg>
+  <span class="logo__textos" aria-hidden={enlace ? 'true' : undefined}>
+    <span class="logo__nombre">Granadin<span class="ia">IA</span></span>
+    {lema && <span class="logo__lema">{sitio.LEMA_LOGO}</span>}
+  </span>
+</Etiqueta>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--titulo);
+    text-decoration: none;
+    border-radius: 10px;
+    min-height: 44px;
+  }
+  .logo__icono {
+    width: 3.1rem;
+    height: auto;
+    flex: none;
+  }
+  .logo__oscuro {
+    fill: var(--titulo);
+  }
+  .logo__cobre {
+    fill: var(--decoracion);
+  }
+  .logo__textos {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+  }
+  .logo__nombre {
+    font-size: 1.6rem;
+    font-weight: 750;
+    letter-spacing: -0.01em;
+  }
+  .logo__lema {
+    margin-top: 0.35rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--texto-suave);
+  }
+</style>

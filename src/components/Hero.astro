@@ -1,0 +1,391 @@
+---
+import Icono from './Icono.astro';
+import trazos from '../assets/marca/alhambra-paths.json';
+import { sitio, whatsappConTexto } from '../config/sitio';
+import { hero, comunes } from '../content/textos';
+
+// Para “dibujar” el contorno, cada subtrazo va por separado (el relleno usa el trazo completo)
+const subtrazos = (d: string) => d.split(/(?=M )/).map((s) => s.trim()).filter(Boolean);
+const lineasOscuras = subtrazos(trazos.oscuro);
+const lineasCobre = subtrazos(trazos.cobre);
+---
+
+<section class="hero" aria-labelledby="hero-titulo">
+  <div class="hero__fondo" aria-hidden="true"></div>
+  <div class="hero__rejilla contenedor">
+    <div class="hero__texto">
+      <p class="antetitulo">
+        <span>Granadin<span class="ia">IA</span> · {hero.antetitulo.split('·')[1]?.trim()}</span>
+      </p>
+      <h1 id="hero-titulo">{hero.titulo}</h1>
+      <p class="entradilla">{hero.subtitulo}</p>
+
+      <div class="hero__botones">
+        <a class="boton boton--whatsapp boton--grande" href={whatsappConTexto()} rel="noopener">
+          <Icono nombre="whatsapp" />
+          {comunes.botonWhatsApp}
+          <span class="sr-only">{comunes.seAbreWhatsApp}</span>
+        </a>
+        <a class="boton boton--secundario boton--grande" href="#como-funciona">
+          {hero.botonSecundario}
+          <Icono nombre="flecha" />
+        </a>
+      </div>
+
+      <ul class="hero__confianza" aria-label="En resumen">
+        {
+          hero.confianza.map((t) => (
+            <li>
+              <Icono nombre="check" />
+              {t}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="hero__visual" aria-hidden="true">
+      <div class="arco">
+        <svg class="alhambra" viewBox={trazos.viewBox} focusable="false">
+          <g class="alhambra__relleno">
+            <path class="alhambra__oscuro" d={trazos.oscuro}></path>
+            <path class="alhambra__cobre" d={trazos.cobre}></path>
+          </g>
+          <g class="alhambra__lineas">
+            {lineasOscuras.map((d) => <path class="linea linea--oscura" d={d} pathLength="1" />)}
+            {lineasCobre.map((d) => <path class="linea linea--cobre" d={d} pathLength="1" />)}
+          </g>
+        </svg>
+      </div>
+
+      <div class="movil">
+        <div class="movil__pantalla">
+          <div class="movil__barra">
+            <span class="movil__avatar"></span>
+            <span>
+              <strong>{hero.chat.contacto}</strong>
+              <small>en línea</small>
+            </span>
+          </div>
+          <div class="movil__chat">
+            <p class="burbuja burbuja--entra">{hero.chat.entrante}</p>
+            <div class="movil__respuesta">
+              <p class="escribiendo"><span></span><span></span><span></span></p>
+              <p class="burbuja burbuja--sale">
+                {hero.chat.respuesta}
+                <small>{hero.chat.estado}</small>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    padding-block: clamp(2rem, 1rem + 4vw, 5rem) clamp(3rem, 2rem + 5vw, 6.5rem);
+    overflow: clip;
+  }
+  /* Celosía nazarí muy sutil, en SVG propio */
+  .hero__fondo {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.5;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%23B88255' stroke-opacity='.22' stroke-width='1.2'%3E%3Cpath d='M32 4 40 24 60 32 40 40 32 60 24 40 4 32 24 24Z'/%3E%3Cpath d='M0 0 12 12M64 0 52 12M0 64 12 52M64 64 52 52'/%3E%3C/g%3E%3C/svg%3E");
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 75% 40%, #000 0%, transparent 75%);
+    mask-image: radial-gradient(ellipse 70% 60% at 75% 40%, #000 0%, transparent 75%);
+  }
+  .hero__rejilla {
+    display: grid;
+    gap: clamp(2.5rem, 1rem + 4vw, 4rem);
+    align-items: center;
+  }
+  @media (min-width: 64rem) {
+    .hero__rejilla {
+      grid-template-columns: 1.15fr 1fr;
+    }
+  }
+  .hero h1 {
+    max-width: 16ch;
+  }
+  .hero .entradilla {
+    max-width: 38rem;
+  }
+  .hero__botones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--e-3);
+    margin-top: var(--e-6);
+  }
+  @media (max-width: 30rem) {
+    .hero__botones .boton {
+      width: 100%;
+    }
+  }
+  .hero__confianza {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--e-2) var(--e-5);
+    margin: var(--e-5) 0 0;
+    padding: 0;
+    list-style: none;
+    color: var(--texto-suave);
+    font-size: var(--texto-pequeno);
+    font-weight: var(--peso-medio);
+  }
+  .hero__confianza li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .hero__confianza :global(svg) {
+    width: 1.15rem;
+    height: 1.15rem;
+    color: var(--oliva);
+    stroke-width: 2.6;
+  }
+
+  /* ---------------- Visual ---------------- */
+  .hero__visual {
+    position: relative;
+    width: min(100%, 32rem);
+    margin-inline: auto;
+    padding-bottom: 4rem;
+  }
+  .arco {
+    position: relative;
+    aspect-ratio: 4 / 4.2;
+    border-radius: 999px 999px var(--radio-grande) var(--radio-grande);
+    background:
+      radial-gradient(circle at 50% 30%, rgb(217 162 115 / 0.35), transparent 60%),
+      linear-gradient(180deg, var(--superficie), var(--fondo-alterno));
+    border: 2px solid var(--decoracion);
+    box-shadow: var(--sombra-alta);
+    overflow: hidden;
+  }
+  .arco::before {
+    /* segundo arco interior, como en las puertas nazaríes */
+    content: '';
+    position: absolute;
+    inset: 12px;
+    border-radius: inherit;
+    border: 1px dashed var(--decoracion);
+    opacity: 0.6;
+  }
+  .alhambra {
+    position: absolute;
+    left: 6%;
+    right: 6%;
+    top: 16%;
+    width: 88%;
+  }
+  .alhambra__oscuro {
+    fill: var(--titulo);
+  }
+  .alhambra__cobre {
+    fill: var(--decoracion);
+  }
+  .linea {
+    fill: none;
+    stroke-width: 5;
+    stroke-linejoin: round;
+    opacity: 0;
+  }
+  .linea--oscura {
+    stroke: var(--titulo);
+  }
+  .linea--cobre {
+    stroke: var(--decoracion);
+  }
+
+  .movil {
+    position: absolute;
+    right: -2%;
+    bottom: 0;
+    width: min(60%, 15.5rem);
+    padding: 9px;
+    border-radius: 34px;
+    background: #20140d;
+    box-shadow: var(--sombra-alta), 0 0 0 1px rgb(255 255 255 / 0.06) inset;
+    rotate: 4deg;
+  }
+  .movil__pantalla {
+    border-radius: 26px;
+    overflow: hidden;
+    background: #efe6d8;
+    color: #2a1a10;
+    font-size: 0.8rem;
+    line-height: 1.35;
+  }
+  .movil__barra {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 0.8rem 0.6rem;
+    background: #1f5c3a;
+    color: #fff;
+  }
+  .movil__barra strong {
+    display: block;
+    font-size: 0.85rem;
+  }
+  .movil__barra small {
+    opacity: 0.85;
+    font-size: 0.7rem;
+  }
+  .movil__avatar {
+    width: 1.9rem;
+    height: 1.9rem;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 38%, #d9a273 0 28%, transparent 29%),
+      radial-gradient(circle at 50% 100%, #d9a273 0 45%, #f6ead3 46%);
+    flex: none;
+  }
+  .movil__chat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-height: 15.5rem;
+    padding: 0.8rem 0.7rem 1rem;
+    background:
+      radial-gradient(circle, rgb(82 48 29 / 0.06) 1px, transparent 1.5px) 0 0 / 14px 14px,
+      #efe6d8;
+  }
+  .burbuja {
+    max-width: 88%;
+    margin: 0;
+    padding: 0.5rem 0.65rem;
+    border-radius: 12px;
+    box-shadow: 0 1px 1px rgb(0 0 0 / 0.08);
+  }
+  .burbuja small {
+    display: block;
+    margin-top: 0.3rem;
+    text-align: right;
+    font-size: 0.66rem;
+    color: #3d6b52;
+    font-weight: 700;
+  }
+  .burbuja--entra {
+    align-self: flex-start;
+    background: #fff;
+    border-top-left-radius: 4px;
+  }
+  .burbuja--sale {
+    align-self: flex-end;
+    background: #d6f0cf;
+    border-top-right-radius: 4px;
+  }
+  .movil__respuesta {
+    display: grid;
+    justify-items: end;
+  }
+  .movil__respuesta > * {
+    grid-area: 1 / 1;
+  }
+  .escribiendo {
+    display: flex;
+    gap: 4px;
+    align-self: start;
+    margin: 0;
+    padding: 0.6rem 0.75rem;
+    background: #d6f0cf;
+    border-radius: 12px;
+    opacity: 0;
+  }
+
+  /* ================ Animación de entrada (una sola vez, < 3 s) ================
+     Solo con JS activo y sin “reducir animaciones”: si no, todo se ve quieto. */
+  :global(.anima) .alhambra__relleno {
+    animation: aparecer 700ms ease 1.25s both;
+  }
+  :global(.anima) .linea {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation:
+      dibujar 1.5s var(--curva) 0.1s forwards,
+      desvanecer 500ms ease 1.6s forwards;
+  }
+  :global(.anima) .linea--cobre {
+    animation-delay: 0.35s, 1.6s;
+  }
+  :global(.anima) .movil {
+    animation: subir 800ms var(--curva) 0.3s both;
+  }
+  :global(.anima) .burbuja--entra {
+    animation: burbuja 400ms var(--curva) 1s both;
+  }
+  :global(.anima) .escribiendo {
+    animation: escribiendo 850ms ease 1.45s both;
+  }
+  .escribiendo span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #3d6b52;
+  }
+  :global(.anima) .burbuja--sale {
+    animation: burbuja 450ms var(--curva) 2.3s both;
+  }
+
+  @keyframes dibujar {
+    0% {
+      opacity: 1;
+      stroke-dashoffset: 1;
+    }
+    100% {
+      opacity: 1;
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes desvanecer {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes aparecer {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes subir {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes burbuja {
+    from {
+      opacity: 0;
+      transform: translateY(10px) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes escribiendo {
+    0%,
+    100% {
+      opacity: 0;
+    }
+    20%,
+    80% {
+      opacity: 1;
+    }
+  }
+</style>

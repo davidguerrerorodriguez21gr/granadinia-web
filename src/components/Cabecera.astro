@@ -1,0 +1,461 @@
+---
+import Logo from './Logo.astro';
+import Icono from './Icono.astro';
+import { sitio, whatsappConTexto, telefonoHref } from '../config/sitio';
+import { navegacion, comunes } from '../content/textos';
+
+interface Props {
+  /** En las páginas legales y la 404 los enlaces apuntan a la portada */
+  prefijo?: string;
+}
+const { prefijo = '' } = Astro.props;
+const enlaces = navegacion.filter((e) => !('soloConPrecios' in e) || sitio.MOSTRAR_PRECIOS);
+const wa = whatsappConTexto();
+---
+
+<header class="cabecera" data-cabecera>
+  <div class="cabecera__fila contenedor">
+    <Logo />
+
+    <nav class="cabecera__nav" aria-label="Principal">
+      <ul id="menu-principal" class="menu" data-menu>
+        {
+          enlaces.map((e) => (
+            <li>
+              <a class="menu__enlace" href={`${prefijo}#${e.id}`}>
+                {e.texto}
+              </a>
+            </li>
+          ))
+        }
+        <li class="menu__solo-movil">
+          <a class="boton boton--whatsapp boton--grande" href={wa} rel="noopener">
+            <Icono nombre="whatsapp" />
+            {comunes.botonWhatsApp}
+            <span class="sr-only">{comunes.seAbreWhatsApp}</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="cabecera__acciones">
+      <button class="boton-icono" type="button" data-tema-boton aria-pressed="false" hidden>
+        <Icono nombre="luna" clase="icono-luna" />
+        <Icono nombre="sol" clase="icono-sol" />
+        <span class="sr-only" data-tema-texto>Modo oscuro</span>
+      </button>
+
+      <a class="boton boton--whatsapp cabecera__wa" href={wa} rel="noopener">
+        <Icono nombre="whatsapp" />
+        <span>{comunes.botonWhatsApp}</span>
+        <span class="sr-only">{comunes.seAbreWhatsApp}</span>
+      </a>
+
+      <button
+        class="boton-icono cabecera__hamburguesa"
+        type="button"
+        aria-expanded="false"
+        aria-controls="menu-principal"
+        data-menu-boton
+      >
+        <Icono nombre="menu" clase="icono-abrir" />
+        <Icono nombre="cerrar" clase="icono-cerrar" />
+        <span class="sr-only" data-menu-texto>{comunes.abrirMenu}</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Barra inferior fija en móvil -->
+<div class="barra-movil" aria-label="Contacto rápido" role="region">
+  <a class="boton boton--whatsapp" href={wa} rel="noopener">
+    <Icono nombre="whatsapp" />
+    {comunes.botonWhatsAppCorto}
+    <span class="sr-only">{comunes.seAbreWhatsApp}</span>
+  </a>
+  <a class="boton" href={telefonoHref}>
+    <Icono nombre="telefono" />
+    {comunes.botonLlamar}
+    <span class="sr-only">al {sitio.TELEFONO_VISIBLE} {comunes.seAbreTelefono}</span>
+  </a>
+</div>
+
+<style>
+  .cabecera {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--cabecera-fondo);
+    border-bottom: 1px solid transparent;
+    -webkit-backdrop-filter: saturate(1.4) blur(10px);
+    backdrop-filter: saturate(1.4) blur(10px);
+    transition:
+      border-color var(--medio) ease,
+      box-shadow var(--medio) ease;
+  }
+  .cabecera.compacta {
+    border-color: var(--borde);
+    box-shadow: 0 6px 20px -14px rgb(46 26 16 / 0.35);
+  }
+  .cabecera__fila {
+    display: flex;
+    align-items: center;
+    gap: var(--e-4);
+    min-height: var(--alto-cabecera);
+    padding-block: var(--e-2);
+    transition: min-height var(--medio) var(--curva);
+  }
+  .cabecera.compacta .cabecera__fila {
+    min-height: 3.75rem;
+  }
+  .cabecera :global(.logo) {
+    margin-right: auto;
+  }
+  .cabecera :global(.logo__icono) {
+    transition: width var(--medio) var(--curva);
+  }
+  .cabecera.compacta :global(.logo__icono) {
+    width: 2.6rem;
+  }
+
+  .menu {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    max-width: none;
+  }
+  .menu__enlace {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 0.6rem;
+    color: var(--texto);
+    font-size: 1rem;
+    white-space: nowrap;
+    font-weight: var(--peso-medio);
+    text-decoration: none;
+    border-radius: 8px;
+    position: relative;
+  }
+  .menu__enlace::after {
+    content: '';
+    position: absolute;
+    left: 0.6rem;
+    right: 0.6rem;
+    bottom: 8px;
+    height: 2px;
+    background: var(--acento);
+    border-radius: 2px;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--medio) var(--curva);
+  }
+  .menu__enlace:hover::after,
+  .menu__enlace[aria-current='true']::after {
+    transform: scaleX(1);
+  }
+  .menu__solo-movil {
+    display: none;
+  }
+
+  .cabecera__acciones {
+    display: flex;
+    align-items: center;
+    gap: var(--e-2);
+  }
+
+  .boton-icono {
+    display: inline-grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid var(--borde-control);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--texto);
+    cursor: pointer;
+    transition: background-color var(--rapido) ease;
+  }
+  .boton-icono:hover {
+    background: var(--superficie);
+  }
+  .boton-icono :global(svg) {
+    width: 22px;
+    height: 22px;
+  }
+  .boton-icono[hidden] {
+    display: none;
+  }
+  :global(.js) .boton-icono[hidden] {
+    display: inline-grid;
+  }
+  :global(.icono-sol),
+  :global(.icono-cerrar) {
+    display: none;
+  }
+  :global([data-tema-actual='oscuro']) :global(.icono-sol) {
+    display: block;
+  }
+  :global([data-tema-actual='oscuro']) :global(.icono-luna) {
+    display: none;
+  }
+  [aria-expanded='true'] :global(.icono-cerrar) {
+    display: block;
+  }
+  [aria-expanded='true'] :global(.icono-abrir) {
+    display: none;
+  }
+
+  .cabecera__hamburguesa {
+    display: none;
+  }
+
+  /* Barra inferior: solo en pantallas estrechas */
+  .barra-movil {
+    display: none;
+  }
+
+  /* ---------- Pantallas medianas y pequeñas ---------- */
+  .cabecera__wa {
+    white-space: nowrap;
+  }
+  @media (max-width: 87.99rem) {
+    /* Solo icono a la vista; el texto sigue disponible para lectores de pantalla */
+    .cabecera__wa span:first-of-type {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+    .cabecera__wa {
+      width: 3rem;
+      padding-inline: 0;
+    }
+  }
+
+  @media (max-width: 71.99rem) {
+    .cabecera__wa {
+      display: none;
+    }
+    /* Sin JS: el menú se muestra como lista de enlaces bajo el logo */
+    :global(html:not(.js)) .cabecera {
+      position: static;
+    }
+    :global(html:not(.js)) .cabecera__fila {
+      flex-wrap: wrap;
+    }
+    :global(html:not(.js)) .cabecera__nav {
+      order: 3;
+      width: 100%;
+    }
+    :global(html:not(.js)) .menu {
+      flex-wrap: wrap;
+    }
+
+    /* Con JS: menú hamburguesa a pantalla completa */
+    :global(.js) .cabecera__hamburguesa {
+      display: inline-grid;
+    }
+    :global(.js) .cabecera__nav {
+      position: fixed;
+      inset: var(--alto-cabecera) 0 0 0;
+      z-index: 40;
+      padding: var(--e-5) var(--margen) var(--e-7);
+      background: var(--fondo);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      visibility: hidden;
+      opacity: 0;
+      transform: translateY(-8px);
+      transition:
+        opacity var(--medio) var(--curva),
+        transform var(--medio) var(--curva),
+        visibility 0s linear var(--medio);
+    }
+    :global(.js) .cabecera.abierta .cabecera__nav {
+      visibility: visible;
+      opacity: 1;
+      transform: none;
+      transition:
+        opacity var(--medio) var(--curva),
+        transform var(--medio) var(--curva);
+    }
+    :global(.js) .cabecera.compacta .cabecera__nav {
+      top: 3.75rem;
+    }
+    :global(.js) .menu {
+      flex-direction: column;
+      gap: 0;
+    }
+    :global(.js) .menu__enlace {
+      width: 100%;
+      min-height: 3.5rem;
+      font-size: 1.35rem;
+      font-weight: var(--peso-fuerte);
+      border-bottom: 1px solid var(--borde);
+      border-radius: 0;
+    }
+    :global(.js) .menu__enlace::after {
+      display: none;
+    }
+    :global(.js) .menu__solo-movil {
+      display: block;
+      margin-top: var(--e-5);
+    }
+    :global(.js) .menu__solo-movil .boton {
+      width: 100%;
+    }
+
+    .barra-movil {
+      position: fixed;
+      inset: auto 0 0 0;
+      z-index: 45;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--e-2);
+      padding: var(--e-2) var(--margen) calc(var(--e-2) + env(safe-area-inset-bottom));
+      background: var(--cabecera-fondo);
+      border-top: 1px solid var(--borde);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+    }
+    :global(body) {
+      padding-bottom: calc(4.5rem + env(safe-area-inset-bottom));
+    }
+  }
+
+  @media (max-width: 22rem) {
+    .cabecera :global(.logo__nombre) {
+      font-size: 1.35rem;
+    }
+    .cabecera :global(.logo__icono) {
+      width: 2.5rem;
+    }
+  }
+</style>
+
+<script>
+  const cabecera = document.querySelector<HTMLElement>('[data-cabecera]');
+  const botonMenu = document.querySelector<HTMLButtonElement>('[data-menu-boton]');
+  const textoMenu = document.querySelector<HTMLElement>('[data-menu-texto]');
+  const menu = document.querySelector<HTMLElement>('[data-menu]');
+  const botonTema = document.querySelector<HTMLButtonElement>('[data-tema-boton]');
+  const textoTema = document.querySelector<HTMLElement>('[data-tema-texto]');
+  const raiz = document.documentElement;
+
+  /* ---------- Cabecera compacta al hacer scroll ---------- */
+  let pendiente = false;
+  const actualizarCompacta = () => {
+    cabecera?.classList.toggle('compacta', window.scrollY > 24);
+    pendiente = false;
+  };
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (!pendiente) {
+        pendiente = true;
+        requestAnimationFrame(actualizarCompacta);
+      }
+    },
+    { passive: true },
+  );
+  actualizarCompacta();
+
+  /* ---------- Menú móvil accesible ---------- */
+  const enfocables = () =>
+    // mismo orden que el tabulador: enlaces del menú, botón de tema y botón de cerrar
+    [...(menu?.querySelectorAll<HTMLElement>('a, button') ?? []), botonTema, botonMenu].filter(
+      (el): el is HTMLElement => !!el && el.offsetParent !== null,
+    );
+
+  const abrir = (abierto: boolean, devolverFoco = true) => {
+    if (!cabecera || !botonMenu) return;
+    cabecera.classList.toggle('abierta', abierto);
+    botonMenu.setAttribute('aria-expanded', String(abierto));
+    if (textoMenu) textoMenu.textContent = abierto ? 'Cerrar menú' : 'Abrir menú';
+    document.body.style.overflow = abierto ? 'hidden' : '';
+    if (abierto) menu?.querySelector<HTMLElement>('a')?.focus();
+    else if (devolverFoco) botonMenu.focus();
+  };
+
+  botonMenu?.addEventListener('click', () => abrir(botonMenu.getAttribute('aria-expanded') !== 'true'));
+
+  document.addEventListener('keydown', (e) => {
+    if (!cabecera?.classList.contains('abierta')) return;
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      abrir(false);
+    }
+    if (e.key === 'Tab') {
+      const lista = enfocables();
+      const primero = lista[0];
+      const ultimo = lista[lista.length - 1];
+      if (e.shiftKey && document.activeElement === primero) {
+        e.preventDefault();
+        ultimo?.focus();
+      } else if (!e.shiftKey && document.activeElement === ultimo) {
+        e.preventDefault();
+        primero?.focus();
+      }
+    }
+  });
+
+  menu?.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('a') && cabecera?.classList.contains('abierta')) abrir(false, false);
+  });
+
+  // Si se agranda la ventana con el menú abierto, se cierra
+  matchMedia('(min-width: 72rem)').addEventListener('change', (e) => {
+    if (e.matches && cabecera?.classList.contains('abierta')) abrir(false, false);
+  });
+
+  /* ---------- Modo claro / oscuro ---------- */
+  const oscuroSistema = matchMedia('(prefers-color-scheme: dark)');
+  const temaActual = () => raiz.dataset.tema ?? (oscuroSistema.matches ? 'oscuro' : 'claro');
+  const pintarTema = () => {
+    const t = temaActual();
+    raiz.dataset.temaActual = t;
+    botonTema?.setAttribute('aria-pressed', String(t === 'oscuro'));
+    if (textoTema) textoTema.textContent = 'Modo oscuro';
+    document
+      .querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')
+      .forEach((m) => (m.content = t === 'oscuro' ? '#1F120B' : '#FDF5E5'));
+  };
+  botonTema?.removeAttribute('hidden');
+  botonTema?.addEventListener('click', () => {
+    const nuevo = temaActual() === 'oscuro' ? 'claro' : 'oscuro';
+    raiz.dataset.tema = nuevo;
+    try {
+      localStorage.setItem('granadinia-tema', nuevo);
+    } catch {}
+    pintarTema();
+  });
+  oscuroSistema.addEventListener('change', pintarTema);
+  pintarTema();
+
+  /* ---------- Enlace activo según la sección visible ---------- */
+  const enlaces = [...document.querySelectorAll<HTMLAnchorElement>('.menu__enlace')];
+  const secciones = enlaces
+    .map((a) => document.getElementById(a.hash.slice(1)))
+    .filter((s): s is HTMLElement => !!s);
+  if ('IntersectionObserver' in window && secciones.length) {
+    const io = new IntersectionObserver(
+      (entradas) => {
+        entradas.forEach((en) => {
+          if (!en.isIntersecting) return;
+          enlaces.forEach((a) =>
+            a.hash === `#${en.target.id}` ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current'),
+          );
+        });
+      },
+      { rootMargin: '-45% 0px -50% 0px' },
+    );
+    secciones.forEach((s) => io.observe(s));
+  }
+</script>
