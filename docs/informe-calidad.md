@@ -122,7 +122,7 @@ En las herramientas del navegador: pestaña **Aplicación → Cookies** vacía; 
 | `https://wa.me/34746056620?text=…` (mantenimiento) | Hola David, me gustaría saber más sobre el mantenimiento mensual. |
 | `https://wa.me/34746056620?text=…` (otros servicios) | Hola David, quería preguntarte por otros servicios de GranadinIA. |
 | `tel:+34746056620` | +34 746 05 66 20 |
-| `mailto:david@granadinia.es?subject=Consulta%20desde%20la%20web%20de%20GranadinIA` | Asunto: Consulta desde la web de GranadinIA |
+| `mailto:dguerrero@granadinia.es?subject=Consulta%20desde%20la%20web%20de%20GranadinIA` | Asunto: Consulta desde la web de GranadinIA |
 | Formulario → WhatsApp | «Nombre: María José … ¿cómo lo hago?» (tildes, eñes y saltos de línea correctos) |
 
 `hola@granadinia.es` no aparece en ninguna página.

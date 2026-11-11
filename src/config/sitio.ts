@@ -19,7 +19,7 @@ export const sitio = {
   DOMINIO_SECUNDARIO: 'granadinia.com', // redirige con 301 a granadinia.es
 
   // ── Contacto (lo único público) ─────────────────────────────
-  CORREO_CONTACTO: 'david@granadinia.es',
+  CORREO_CONTACTO: 'dguerrero@granadinia.es',
   TELEFONO_VISIBLE: '746 05 66 20',
   TELEFONO_E164: '+34746056620',
   WHATSAPP_URL: 'https://wa.me/34746056620',

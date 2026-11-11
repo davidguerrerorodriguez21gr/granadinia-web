@@ -139,8 +139,10 @@ for (const [nombre, viewport] of [['escritorio', { width: 1440, height: 900 }], 
   ok(unicos.every((u) => !/[^\x21-\x7e]/.test(u)), 'ningún enlace lleva tildes ni espacios sin codificar');
   ok(filas.some((f) => f.decodificado?.includes('me gustaría información')), 'el texto de WhatsApp conserva las tildes');
   ok(unicos.includes('tel:+34746056620'), 'tel: en formato internacional');
-  ok(unicos.some((u) => u.startsWith('mailto:david@granadinia.es?subject=')), 'mailto: con asunto');
-  ok(!(await p.content()).includes('hola@granadinia.es'), 'hola@granadinia.es no aparece en la web');
+  ok(unicos.some((u) => u.startsWith('mailto:dguerrero@granadinia.es?subject=')), 'mailto: con asunto');
+  const html = await p.content();
+  ok(!html.includes('hola@granadinia.es'), 'hola@granadinia.es no aparece en la web');
+  ok(!html.includes('david@granadinia.es'), 'el correo antiguo david@granadinia.es no aparece en la web');
   informe.push({ enlaces: filas });
   await ctx.close();
 }
