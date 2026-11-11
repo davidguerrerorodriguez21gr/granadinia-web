@@ -114,6 +114,28 @@ for (const js of [true, false]) {
   await ctx.close();
 }
 
+/* ---------- Menú móvil a pantalla completa ---------- */
+{
+  const ctx = await navegador.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' });
+  const p = await ctx.newPage();
+  await p.goto(base + '/');
+  console.log('Menú móvil');
+  for (const [cuando, y] of [['arriba del todo', 0], ['tras bajar', 1500]]) {
+    await p.evaluate((y) => scrollTo(0, y), y);
+    await p.waitForTimeout(200);
+    await p.click('[data-menu-boton]');
+    await p.waitForTimeout(300);
+    const r = await p.evaluate(() => {
+      const n = document.querySelector('.cabecera__nav').getBoundingClientRect();
+      return { bajo: n.bottom, alto: innerHeight };
+    });
+    ok(r.bajo >= r.alto - 1, `${cuando}: el menú llega hasta abajo de la pantalla (${Math.round(r.bajo)} de ${r.alto} px)`);
+    ok(await p.locator('.menu__solo-movil .boton').isVisible(), `${cuando}: se ve el botón de WhatsApp del menú`);
+    await p.keyboard.press('Escape');
+  }
+  await ctx.close();
+}
+
 await navegador.close();
 console.log(fallos ? `\n${fallos} fallo(s)` : '\nTodo correcto');
 process.exit(fallos ? 1 : 0);

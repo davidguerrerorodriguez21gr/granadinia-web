@@ -85,13 +85,22 @@ const wa = whatsappConTexto();
     position: sticky;
     top: 0;
     z-index: 50;
-    background: var(--cabecera-fondo);
     border-bottom: 1px solid transparent;
-    -webkit-backdrop-filter: saturate(1.4) blur(10px);
-    backdrop-filter: saturate(1.4) blur(10px);
     transition:
       border-color var(--medio) ease,
       box-shadow var(--medio) ease;
+  }
+  /* El fondo esmerilado va en una capa aparte: un backdrop-filter en la propia
+     cabecera haría que el menú móvil (position: fixed) se midiera respecto a ella
+     y no a la pantalla, y solo se vería una franja del alto de la cabecera. */
+  .cabecera::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--cabecera-fondo);
+    -webkit-backdrop-filter: saturate(1.4) blur(10px);
+    backdrop-filter: saturate(1.4) blur(10px);
   }
   .cabecera.compacta {
     border-color: var(--borde);
