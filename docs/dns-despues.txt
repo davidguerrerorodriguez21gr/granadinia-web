@@ -65,3 +65,11 @@ parkingsrv0.dondominio.com.
 # - Añadido: TXT _github-pages-challenge-davidguerrerorodriguez21gr (verificación de GitHub; NO BORRAR).
 # - Servidores DNS (NS) sin cambios. Sin registro CAA (Let's Encrypt puede emitir).
 # - granadinia.com sigue en el parking de DonDominio: pendiente la redirección 301 a granadinia.es.
+
+######## granadinia.com — actualización (2026-11-11)
+# - Servidores DNS de granadinia.com cambiados a Cloudflare (plan gratuito): rajeev.ns.cloudflare.com, vida.ns.cloudflare.com.
+#   (Lo de arriba sobre .com es la foto ANTES de ese cambio.)
+# - En Cloudflare: A @ 192.0.2.1 y A www 192.0.2.1, ambos con proxy (nube naranja); TXT SPF sin cambios.
+# - Regla de redirección (wildcard): http*://*granadinia.com/* → https://granadinia.es/${3}, 301, conserva parámetros.
+# - Comprobado: http/https, con y sin www, conservando ruta y ?parámetros → 301 a https://granadinia.es/…
+# - granadinia.es: NS siguen en ns1/ns2.dondominio.com; MX de Zoho intactos.
