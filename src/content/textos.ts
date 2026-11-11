@@ -166,6 +166,7 @@ export const paraQuien = {
     { icono: 'climatizacion', nombre: 'Climatización' },
     { icono: 'reformas', nombre: 'Reformas' },
     { icono: 'electronica', nombre: 'Reparación de electrónica' },
+    { icono: 'ferreteria', nombre: 'Ferreterías' },
   ],
   otrosTitulo: '¿Tienes otro tipo de negocio local?',
   otrosTexto: 'Peluquería, tienda, taller… Escríbeme y te digo con sinceridad si te puedo ayudar.',

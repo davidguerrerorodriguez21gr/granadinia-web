@@ -42,12 +42,23 @@ import { comunes } from '../content/textos';
 <style>
   .oficios {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 10.5rem), 1fr));
+    /* 6 oficios: 2 × 3 en móvil, 3 × 2 en tablet y 6 en fila en escritorio, sin huecos */
+    grid-template-columns: repeat(2, 1fr);
     gap: var(--e-4);
     margin: 0 0 var(--e-6);
     padding: 0;
     list-style: none;
     max-width: none;
+  }
+  @media (min-width: 40rem) {
+    .oficios {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media (min-width: 68rem) {
+    .oficios {
+      grid-template-columns: repeat(6, 1fr);
+    }
   }
   .oficio {
     display: flex;
