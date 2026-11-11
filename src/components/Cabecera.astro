@@ -39,17 +39,17 @@ const wa = whatsappConTexto();
     </nav>
 
     <div class="cabecera__acciones">
-      <button class="boton-icono" type="button" data-tema-boton aria-pressed="false" hidden>
-        <Icono nombre="luna" clase="icono-luna" />
-        <Icono nombre="sol" clase="icono-sol" />
-        <span class="sr-only" data-tema-texto>Modo oscuro</span>
-      </button>
-
       <a class="boton boton--whatsapp cabecera__wa" href={wa} rel="noopener">
         <Icono nombre="whatsapp" />
         <span>{comunes.botonWhatsApp}</span>
         <span class="sr-only">{comunes.seAbreWhatsApp}</span>
       </a>
+
+      <button class="boton-icono cabecera__tema" type="button" data-tema-boton aria-pressed="false" hidden>
+        <Icono nombre="luna" clase="icono-luna" />
+        <Icono nombre="sol" clase="icono-sol" />
+        <span class="sr-only" data-tema-texto>Modo oscuro</span>
+      </button>
 
       <button
         class="boton-icono cabecera__hamburguesa"
@@ -212,6 +212,25 @@ const wa = whatsappConTexto();
 
   .cabecera__hamburguesa {
     display: none;
+  }
+
+  /* En escritorio el botón de tema va al final y más discreto */
+  @media (min-width: 72rem) {
+    .cabecera__tema {
+      width: 38px;
+      height: 38px;
+      margin-left: var(--e-1, 0.25rem);
+      border-color: transparent;
+      color: var(--texto-suave);
+    }
+    .cabecera__tema :global(svg) {
+      width: 19px;
+      height: 19px;
+    }
+    .cabecera__tema:hover {
+      color: var(--texto);
+      border-color: var(--borde);
+    }
   }
 
   /* Barra inferior: solo en pantallas estrechas */
