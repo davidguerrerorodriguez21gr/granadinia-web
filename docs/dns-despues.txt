@@ -1,0 +1,67 @@
+# Foto del DNS DESPUÉS de los cambios — 2026-11-11 08:33 CET
+# Consultas directas a los servidores autoritativos (ns1/ns2.dondominio.com)
+
+######## granadinia.es (autoritativo: ns1.dondominio.com.)
+== granadinia.es A
+185.199.108.153
+185.199.109.153
+185.199.110.153
+185.199.111.153
+== granadinia.es AAAA
+2606:50c0:8000::153
+2606:50c0:8001::153
+2606:50c0:8002::153
+2606:50c0:8003::153
+== granadinia.es CNAME
+== granadinia.es MX
+10 mx.zoho.eu.
+20 mx2.zoho.eu.
+50 mx3.zoho.eu.
+== granadinia.es TXT
+"v=spf1 include:zohomail.eu include:spf.dondominio.com"
+"zoho-verification=zb57906818.zmverify.zoho.eu"
+== granadinia.es CAA
+== granadinia.es NS
+ns1.dondominio.com.
+ns2.dondominio.com.
+== www.granadinia.es CNAME
+davidguerrerorodriguez21gr.github.io.
+== _dmarc.granadinia.es TXT
+== zmail._domainkey.granadinia.es TXT
+"v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDe3m9Y162z0zQaH/96G+VCzfhIlWejCxRioBx6wEDroxQo+BmeWeaeuCSBXjBIE065mXIsWi6AjbmlgNem7ZfzFdl30qr7Q5miKYZ9TQOcocZPLjumWxgwODEpeSKcui6o12IdHAtHrcLMHmfkhNRiGaPeissYgYyi1cBpfFlZVwIDAQAB"
+== _github-pages-challenge-davidguerrerorodriguez21gr.granadinia.es TXT
+"78cd8af97aa7a568916a7ea71319c6"
+== comodín (loquesea.granadinia.es)
+
+######## granadinia.com (autoritativo: ns1.dondominio.com.)
+== granadinia.com A
+31.214.178.55
+== granadinia.com AAAA
+== granadinia.com CNAME
+== granadinia.com MX
+== granadinia.com TXT
+"v=spf1 include:spf.dondominio.com"
+== granadinia.com CAA
+== granadinia.com NS
+ns1.dondominio.com.
+ns2.dondominio.com.
+== www.granadinia.com CNAME
+parkingsrv0.dondominio.com.
+== _dmarc.granadinia.com TXT
+parkingsrv0.dondominio.com.
+== zmail._domainkey.granadinia.com TXT
+parkingsrv0.dondominio.com.
+== _github-pages-challenge-davidguerrerorodriguez21gr.granadinia.com TXT
+parkingsrv0.dondominio.com.
+== comodín (loquesea.granadinia.com)
+parkingsrv0.dondominio.com.
+
+######## Lectura (añadida a mano)
+# Comparado con docs/dns-antes.txt:
+# - CORREO de granadinia.es: IDÉNTICO. MX 10/20/50 *.zoho.eu, SPF, zoho-verification y DKIM zmail._domainkey
+#   coinciden carácter por carácter (comprobado con diff). No había DMARC antes y sigue sin haberlo.
+# - Web: A @ → 4 IP de GitHub Pages; AAAA @ → 4 IPv6 de GitHub; www → CNAME davidguerrerorodriguez21gr.github.io.
+# - Eliminados: A 31.214.178.55, www → parkingsrv0.dondominio.com y el comodín *.granadinia.es.
+# - Añadido: TXT _github-pages-challenge-davidguerrerorodriguez21gr (verificación de GitHub; NO BORRAR).
+# - Servidores DNS (NS) sin cambios. Sin registro CAA (Let's Encrypt puede emitir).
+# - granadinia.com sigue en el parking de DonDominio: pendiente la redirección 301 a granadinia.es.
