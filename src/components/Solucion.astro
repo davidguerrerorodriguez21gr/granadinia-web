@@ -14,16 +14,14 @@ import { solucion } from '../content/textos';
 
     <div class="piezas" data-pestanas>
       <!-- Pestañas: solo se activan con JS y en pantallas anchas -->
-      <div class="piezas__lista" role="tablist" aria-label="Piezas del sistema" aria-orientation="vertical" hidden data-tablist>
+      <div class="piezas__lista" hidden data-tablist data-etiqueta="Piezas del sistema">
         {
           solucion.piezas.map((p, i) => (
             <button
               class="piezas__pestana"
               type="button"
-              role="tab"
               id={`pestana-${p.id}`}
-              aria-controls={`pieza-${p.id}`}
-              aria-selected={i === 0 ? 'true' : 'false'}
+              data-pestana={`pieza-${p.id}`}
               tabindex={i === 0 ? 0 : -1}
             >
               <span class="piezas__num" aria-hidden="true">{i + 1}</span>
@@ -209,7 +207,7 @@ import { solucion } from '../content/textos';
   // Patrón ARIA de pestañas con activación automática (flechas, Inicio, Fin)
   const raiz = document.querySelector<HTMLElement>('[data-pestanas]');
   const lista = raiz?.querySelector<HTMLElement>('[data-tablist]');
-  const pestanas = [...(lista?.querySelectorAll<HTMLButtonElement>('[role="tab"]') ?? [])];
+  const pestanas = [...(lista?.querySelectorAll<HTMLButtonElement>('[data-pestana]') ?? [])];
   const paneles = [...(raiz?.querySelectorAll<HTMLElement>('[data-panel]') ?? [])];
   const ancho = matchMedia('(min-width: 60rem)');
   let actual = 0;
@@ -229,6 +227,14 @@ import { solucion } from '../content/textos';
     if (!raiz || !lista) return;
     if (ancho.matches) {
       raiz.classList.add('con-pestanas');
+      // Los roles de pestaña solo existen mientras funcionan como pestañas
+      lista.setAttribute('role', 'tablist');
+      lista.setAttribute('aria-orientation', 'vertical');
+      lista.setAttribute('aria-label', lista.dataset.etiqueta!);
+      pestanas.forEach((p) => {
+        p.setAttribute('role', 'tab');
+        p.setAttribute('aria-controls', p.dataset.pestana!);
+      });
       lista.hidden = false;
       paneles.forEach((p, j) => {
         p.setAttribute('role', 'tabpanel');
@@ -240,6 +246,14 @@ import { solucion } from '../content/textos';
     } else {
       raiz.classList.remove('con-pestanas');
       lista.hidden = true;
+      lista.removeAttribute('role');
+      lista.removeAttribute('aria-orientation');
+      lista.removeAttribute('aria-label');
+      pestanas.forEach((p) => {
+        p.removeAttribute('role');
+        p.removeAttribute('aria-controls');
+        p.removeAttribute('aria-selected');
+      });
       paneles.forEach((p) => {
         p.hidden = false;
         p.removeAttribute('role');
