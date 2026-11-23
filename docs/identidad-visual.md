@@ -181,3 +181,7 @@ TIPOGRAFÍA   Nunito (Google Fonts, licencia OFL gratuita)
 FORMAS       Arco de medio punto arriba · esquinas 14/24 px · botones píldora
 ICONOS       Línea de 2 px, puntas redondeadas
 ```
+
+---
+
+> 🤖 **¿Quieres que Claude te haga un documento con esta marca?** Usa [`docs/encargo-claude-documentos.md`](encargo-claude-documentos.md).
