@@ -9,7 +9,11 @@ interface Props {
   prefijo?: string;
 }
 const { prefijo = '' } = Astro.props;
-const enlaces = navegacion.filter((e) => !('soloConPrecios' in e) || sitio.MOSTRAR_PRECIOS);
+const enlaces = navegacion.filter(
+  (e) =>
+    (!('soloConPrecios' in e) || sitio.MOSTRAR_PRECIOS) &&
+    (!('soloConClientes' in e) || sitio.CLIENTES.length > 0),
+);
 const wa = whatsappConTexto();
 ---
 
