@@ -78,6 +78,25 @@ export const sitio = {
   /** Solo testimonios reales, con permiso. Mientras esté vacío, la sección no se muestra. */
   TESTIMONIOS: [] as { nombre: string; negocio: string; localidad: string; texto: string }[],
 
+  // ── Portfolio ───────────────────────────────────────────────
+  /**
+   * Clientes que se muestran en la cuadrícula de «Portfolio».
+   * Se ven de 9 en 9 (3 × 3); a partir del décimo se pasa de página deslizando o con las flechas.
+   * Mientras esté vacío, la sección y su enlace del menú no se muestran.
+   * - logo:  nombre del archivo dentro de src/assets/clientes/ (png, jpg, webp o svg)
+   * - web:   dirección completa de su web, con https://
+   * - fondo: (opcional) color de la casilla si el logo trae fondo propio, p. ej. '#1a1a1a'
+   * Pon solo clientes reales y con su permiso para enseñar el logo.
+   */
+  CLIENTES: [
+    {
+      nombre: 'Peluquería Unisex Villasol',
+      web: 'https://peluqueriaunisexvillasol.es',
+      logo: 'villasol.png',
+      fondo: '#1a1a1a',
+    },
+  ] as { nombre: string; web: string; logo: string; fondo?: string }[],
+
   // ── Redes y repositorio ─────────────────────────────────────
   GITHUB_USUARIO: 'davidguerrerorodriguez21gr',
   REPO: 'granadinia-web',

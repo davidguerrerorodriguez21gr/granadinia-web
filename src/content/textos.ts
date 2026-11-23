@@ -11,6 +11,7 @@ export const navegacion = [
   { id: 'como-funciona', texto: 'Cómo funciona' },
   { id: 'precios', texto: 'Precios', soloConPrecios: true },
   { id: 'sobre-mi', texto: 'Sobre mí' },
+  { id: 'portfolio', texto: 'Portfolio', soloConClientes: true },
   { id: 'preguntas', texto: 'Preguntas' },
   { id: 'contacto', texto: 'Contacto' },
 ] as const;
@@ -219,6 +220,18 @@ export const sobreMi = {
     'Te lo explico sin tecnicismos y, si quieres, voy a tu negocio.',
   ],
   fotoAlt: 'David, de GranadinIA, sonriendo con los brazos cruzados',
+};
+
+/* ── 8 bis. Portfolio (oculto mientras no haya clientes) ───── */
+export const portfolio = {
+  antetitulo: 'Portfolio',
+  titulo: 'Negocios con los que he trabajado',
+  texto: 'Pulsa en un logo para ver su web.',
+  nuevaPestana: '(se abre en otra pestaña)',
+  anterior: 'Clientes anteriores',
+  siguiente: 'Más clientes',
+  pagina: 'Página',
+  de: 'de',
 };
 
 /* ── 9. Testimonios (ocultos mientras no haya reales) ──────── */

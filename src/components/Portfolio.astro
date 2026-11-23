@@ -1,0 +1,291 @@
+---
+/**
+ * Portfolio: logos de los clientes en páginas de 3 × 3; cada logo enlaza a su web.
+ * Con más de 9 clientes, las páginas se deslizan en horizontal (con el dedo, la rueda
+ * o las flechas). NO SE MUESTRA mientras sitio.CLIENTES esté vacío.
+ * Los logos se guardan en src/assets/clientes/ y se optimizan al compilar.
+ */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Icono from './Icono.astro';
+import { sitio } from '../config/sitio';
+import { portfolio as t } from '../content/textos';
+
+const POR_PAGINA = 9;
+
+const archivos = import.meta.glob<{ default: ImageMetadata }>('../assets/clientes/*.{png,jpg,jpeg,webp,svg}', {
+  eager: true,
+});
+const logoDe = (archivo: string) => {
+  const img = archivos[`../assets/clientes/${archivo}`]?.default;
+  if (!img) throw new Error(`Portfolio: no encuentro src/assets/clientes/${archivo}`);
+  return img;
+};
+const lista = sitio.CLIENTES.map((c) => ({ ...c, img: logoDe(c.logo) }));
+const paginas = Array.from({ length: Math.ceil(lista.length / POR_PAGINA) }, (_, i) =>
+  lista.slice(i * POR_PAGINA, (i + 1) * POR_PAGINA),
+);
+// Con 1 o 2 clientes, la fila se centra en vez de dejar huecos a la derecha
+const columnas = Math.min(3, lista.length);
+---
+
+{
+  lista.length > 0 && (
+    <section id="portfolio" class="seccion" aria-labelledby="portfolio-titulo">
+      <div class="contenedor">
+        <header class="encabezado encabezado--centro aparece">
+          <p class="antetitulo">{t.antetitulo}</p>
+          <h2 id="portfolio-titulo">{t.titulo}</h2>
+          <p>{t.texto}</p>
+        </header>
+
+        <div class="portfolio aparece" data-portfolio style={`--columnas:${columnas}`}>
+          <div class="portfolio__visor" data-visor>
+            {paginas.map((pagina, p) => (
+              <ul
+                class="portfolio__pagina"
+                aria-label={paginas.length > 1 ? `${t.pagina} ${p + 1} ${t.de} ${paginas.length}` : undefined}
+              >
+                {pagina.map((c) => (
+                  <li>
+                    <a
+                      class="cliente"
+                      href={c.web}
+                      target="_blank"
+                      rel="noopener"
+                      style={c.fondo ? `--fondo-casilla:${c.fondo}` : undefined}
+                    >
+                      <Image src={c.img} alt={c.nombre} width={320} class="cliente__logo" />
+                      <span class="sr-only">{t.nuevaPestana}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            ))}
+          </div>
+
+          {paginas.length > 1 && (
+            <div class="portfolio__controles" data-controles hidden>
+              <button class="boton-flecha boton-flecha--atras" type="button" data-anterior disabled>
+                <Icono nombre="flecha" />
+                <span class="sr-only">{t.anterior}</span>
+              </button>
+              <p class="portfolio__contador" aria-live="polite" data-contador>
+                {t.pagina} 1 {t.de} {paginas.length}
+              </p>
+              <button class="boton-flecha" type="button" data-siguiente>
+                <Icono nombre="flecha" />
+                <span class="sr-only">{t.siguiente}</span>
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .portfolio {
+    --hueco: var(--e-3);
+    /* Ancho de una casilla: siempre un tercio del ancho útil, haya los clientes que haya */
+    --casilla: calc((min(100%, 42rem) - 2 * var(--hueco)) / 3);
+    max-width: 42rem;
+    margin: 0 auto;
+  }
+  @media (min-width: 40rem) {
+    .portfolio {
+      --hueco: var(--e-5);
+    }
+  }
+
+  .portfolio__visor {
+    /* relative: los textos .sr-only (absolutos) de las páginas ocultas no deben salirse del visor */
+    position: relative;
+    display: flex;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    /* Aire para que la sombra y el salto al pasar el ratón no se corten */
+    margin: calc(-1 * var(--e-4));
+    padding: var(--e-4);
+    scroll-padding-inline: var(--e-4);
+  }
+  .portfolio__visor::-webkit-scrollbar {
+    display: none;
+  }
+  /* Sin JS no hay flechas: se deja ver la barra para poder desplazarse */
+  :global(html:not(.js)) .portfolio__visor {
+    scrollbar-width: thin;
+  }
+  :global(html:not(.js)) .portfolio__visor::-webkit-scrollbar {
+    display: initial;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .portfolio__visor {
+      scroll-behavior: auto;
+    }
+  }
+
+  .portfolio__pagina {
+    flex: 0 0 100%;
+    display: grid;
+    grid-template-columns: repeat(var(--columnas), var(--casilla));
+    justify-content: center;
+    align-content: start;
+    gap: var(--hueco);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    max-width: none;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+  .portfolio__pagina + .portfolio__pagina {
+    margin-left: calc(2 * var(--e-4) + var(--e-6));
+  }
+
+  .cliente {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1;
+    padding: 14%;
+    /* Casilla clara por defecto: casi todos los logos están pensados para fondo blanco.
+       Si el logo trae fondo propio, en sitio.ts se indica con «fondo». */
+    background: var(--fondo-casilla, #fff);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio-grande);
+    box-shadow: var(--sombra);
+    transition:
+      transform var(--medio) var(--curva),
+      box-shadow var(--medio) var(--curva);
+  }
+  .cliente:hover,
+  .cliente:focus-visible {
+    transform: translateY(-4px);
+    box-shadow: var(--sombra-alta);
+  }
+  .cliente__logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: grayscale(1);
+    opacity: 0.8;
+    transition:
+      filter var(--medio) ease,
+      opacity var(--medio) ease;
+  }
+  .cliente:hover .cliente__logo,
+  .cliente:focus-visible .cliente__logo {
+    filter: none;
+    opacity: 1;
+  }
+  @media (hover: none) {
+    .cliente__logo {
+      filter: none;
+      opacity: 1;
+    }
+  }
+
+  .portfolio__controles {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--e-4);
+    margin-top: var(--e-5);
+  }
+  .portfolio__controles[hidden] {
+    display: none;
+  }
+  .portfolio__contador {
+    margin: 0;
+    min-width: 7ch;
+    text-align: center;
+    color: var(--texto-suave);
+    font-variant-numeric: tabular-nums;
+  }
+  .boton-flecha {
+    display: inline-grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid var(--borde-control);
+    border-radius: 999px;
+    background: var(--superficie);
+    color: var(--texto);
+    cursor: pointer;
+    transition:
+      background-color var(--rapido) ease,
+      opacity var(--rapido) ease;
+  }
+  .boton-flecha:hover:not(:disabled) {
+    background: var(--fondo-alterno);
+  }
+  .boton-flecha:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+  .boton-flecha :global(svg) {
+    width: 22px;
+    height: 22px;
+  }
+  .boton-flecha--atras :global(svg) {
+    transform: scaleX(-1);
+  }
+</style>
+
+<script>
+  import { portfolio as t } from '../content/textos';
+
+  document.querySelectorAll<HTMLElement>('[data-portfolio]').forEach((raiz) => {
+    const visor = raiz.querySelector<HTMLElement>('[data-visor]');
+    const controles = raiz.querySelector<HTMLElement>('[data-controles]');
+    const anterior = raiz.querySelector<HTMLButtonElement>('[data-anterior]');
+    const siguiente = raiz.querySelector<HTMLButtonElement>('[data-siguiente]');
+    const contador = raiz.querySelector<HTMLElement>('[data-contador]');
+    if (!visor || !controles || !anterior || !siguiente || !contador) return;
+
+    const paginas = [...visor.querySelectorAll<HTMLElement>('.portfolio__pagina')];
+    let actual = 0;
+
+    const pintar = () => {
+      anterior.disabled = actual === 0;
+      siguiente.disabled = actual === paginas.length - 1;
+      contador.textContent = `${t.pagina} ${actual + 1} ${t.de} ${paginas.length}`;
+    };
+    const ir = (i: number) => {
+      const destino = paginas[Math.max(0, Math.min(paginas.length - 1, i))];
+      if (destino) visor.scrollTo({ left: destino.offsetLeft - paginas[0]!.offsetLeft });
+    };
+
+    // La página actual sale de la posición del scroll, así vale igual para dedo, rueda y teclado
+    let pendiente = false;
+    visor.addEventListener(
+      'scroll',
+      () => {
+        if (pendiente) return;
+        pendiente = true;
+        requestAnimationFrame(() => {
+          const ancho = paginas[1] ? paginas[1].offsetLeft - paginas[0]!.offsetLeft : 1;
+          const nueva = Math.round(visor.scrollLeft / ancho);
+          if (nueva !== actual) {
+            actual = nueva;
+            pintar();
+          }
+          pendiente = false;
+        });
+      },
+      { passive: true },
+    );
+
+    anterior.addEventListener('click', () => ir(actual - 1));
+    siguiente.addEventListener('click', () => ir(actual + 1));
+
+    controles.hidden = false;
+    pintar();
+  });
+</script>
